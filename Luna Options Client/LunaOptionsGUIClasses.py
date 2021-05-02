@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import font
 from PIL import ImageTk, Image
+import requests
 
 
 class LunaPage:
@@ -8,6 +9,7 @@ class LunaPage:
     The base class for the Luna Options GUI
     """
     def __init__(self, root, bg_color):
+        self.server = 'http://localhost:42069'
         self.root = root
         self.homepage = None
         self.quit_page = None
@@ -33,7 +35,7 @@ class LunaPage:
         self.report_font = font.Font(family='Courier', size=14, weight="bold")
 
         # Create Frame for raise functionality
-        bg_frame = Frame(root, bg=bg_color, height=960, width=880)
+        bg_frame = Frame(root, bg=bg_color, height=1018, width=960)
         bg_frame.place(relx=0.0, rely=0.0, anchor='nw')
         self.bg_frame = bg_frame
 
@@ -214,32 +216,36 @@ class SecuritySearch(LunaPage):
             self.searched_security.destroy()
         security = self.search_box.get()
 
-        # Logic to communicate with server will go here!
-        print(security)
-        searched_security = self.build_security_page(security)
+        params = {
+            'tick': security
+        }
+        json = requests.get(self.server, params)
+        data = json.json()
+
+        searched_security = self.build_security_page(data)
         self.searched_security = searched_security
 
     def build_security_page(self, security_information):
         """
         This method will build the Security Page Frame and populate it
         """
-        security_frame = Frame(self.bg_frame, height=800, width=880, bg=self.bg_color)
+        security_frame = Frame(self.bg_frame, height=800, width=960, bg=self.bg_color)
         security_frame.place(relx=0.0, rely=1.0, anchor="sw")
 
         # Program and load needed information from API call
-        ticker = security_information
+        ticker = security_information['ticker']
         ticker_label = Label(security_frame, text=ticker, bg=self.bg_color, font=self.menu_font)
         ticker_label.place(relx=0.5, rely=0.05, anchor="center")
 
-        company_name = "Place Holder Company Name"
+        company_name = security_information['comp']
         company_name_label = Label(security_frame, text=company_name, bg=self.bg_color, font=self.text_font)
         company_name_label.place(relx=0.5, rely=0.1, anchor="center")
 
-        updated = "Last Updated: xx/xx/xx at xx:xx PM"
+        updated = 'Last Updated: ' + security_information['last_updated']
         updated_label = Label(security_frame, text=updated, bg=self.bg_color, font=self.button_font)
         updated_label.place(relx=0.5, rely=0.135, anchor="center")
 
-        sentiment = "Market Sentiment: Neutral"
+        sentiment = security_information['sentiment']
         sentiment_label = Label(security_frame, text=sentiment, bg=self.bg_color, font=self.text_font)
         sentiment_label.place(relx=0.5, rely=0.25, anchor="center")
 
@@ -250,75 +256,75 @@ class SecuritySearch(LunaPage):
         # Data Labels
         current_field_label = Label(security_frame, text="Current:", bg=self.bg_color, font=self.category_font)
         current_field_label.place(relx=0.015, rely=0.43, anchor="nw")
-        current_value = "$xx"
+        current_value = '$' + str(security_information['current'])
         current_value_label = Label(security_frame, text=current_value, bg=self.bg_color, font=self.data_font)
-        current_value_label.place(relx=0.18, rely=0.43, anchor="nw")
+        current_value_label.place(relx=0.0935, rely=0.47, anchor="nw")
 
         dh_field_label = Label(security_frame, text="Daily High:", bg=self.bg_color, font=self.category_font)
         dh_field_label.place(relx=0.015, rely=0.51, anchor="nw")
-        dh_value = "$xx"
+        dh_value = '$' + str(security_information['d_high'])
         dh_value_label = Label(security_frame, text=dh_value, bg=self.bg_color, font=self.data_font)
-        dh_value_label.place(relx=0.18, rely=0.51, anchor="nw")
+        dh_value_label.place(relx=0.0935, rely=0.55, anchor="nw")
 
         dl_field_label = Label(security_frame, text="Daily Low:", bg=self.bg_color, font=self.category_font)
         dl_field_label.place(relx=0.015, rely=0.59, anchor="nw")
-        dl_value = "$xx"
+        dl_value = '$' + str(security_information['d_low'])
         dl_value_label = Label(security_frame, text=dl_value, bg=self.bg_color, font=self.data_font)
-        dl_value_label.place(relx=0.18, rely=0.59, anchor="nw")
+        dl_value_label.place(relx=0.0935, rely=0.63, anchor="nw")
 
         wh_field_label = Label(security_frame, text="Weekly High:", bg=self.bg_color, font=self.category_font)
         wh_field_label.place(relx=0.015, rely=0.67, anchor="nw")
-        wh_value = "$xx"
+        wh_value = '$' + str(security_information['w_high'])
         wh_value_label = Label(security_frame, text=wh_value, bg=self.bg_color, font=self.data_font)
-        wh_value_label.place(relx=0.18, rely=0.67, anchor="nw")
+        wh_value_label.place(relx=0.0935, rely=0.71, anchor="nw")
 
         wl_field_label = Label(security_frame, text="Weekly Low:", bg=self.bg_color, font=self.category_font)
         wl_field_label.place(relx=0.015, rely=0.75, anchor="nw")
-        wl_value = "$xx"
+        wl_value = '$' + str(security_information['w_low'])
         wl_value_label = Label(security_frame, text=wl_value, bg=self.bg_color, font=self.data_font)
-        wl_value_label.place(relx=0.18, rely=0.75, anchor="nw")
+        wl_value_label.place(relx=0.0935, rely=0.79, anchor="nw")
 
         mh_field_label = Label(security_frame, text="30 Day High:", bg=self.bg_color, font=self.category_font)
         mh_field_label.place(relx=0.015, rely=0.83, anchor="nw")
-        mh_value = "$xx"
+        mh_value = '$' + str(security_information['m_high'])
         mh_value_label = Label(security_frame, text=mh_value, bg=self.bg_color, font=self.data_font)
-        mh_value_label.place(relx=0.18, rely=0.83, anchor="nw")
+        mh_value_label.place(relx=0.0935, rely=0.87, anchor="nw")
 
         ml_field_label = Label(security_frame, text="30 Day Low:", bg=self.bg_color, font=self.category_font)
         ml_field_label.place(relx=0.015, rely=0.91, anchor="nw")
-        ml_value = "$xx"
+        ml_value = '$' + str(security_information['m_low'])
         ml_value_label = Label(security_frame, text=ml_value, bg=self.bg_color, font=self.data_font)
-        ml_value_label.place(relx=0.18, rely=0.91, anchor="nw")
+        ml_value_label.place(relx=0.0935, rely=0.95, anchor="nw")
 
-        vol_field_label = Label(security_frame, text="Daily Volume:", bg=self.bg_color, font=self.category_font)
+        vol_field_label = Label(security_frame, text="Current Volume:", bg=self.bg_color, font=self.category_font)
         vol_field_label.place(relx=0.25, rely=0.43, anchor="nw")
-        vol_value = "High"
+        vol_value = f"{security_information['cur_vol']:,d}"
         vol_value_label = Label(security_frame, text=vol_value, bg=self.bg_color, font=self.data_font)
-        vol_value_label.place(relx=0.42, rely=0.43, anchor="nw")
+        vol_value_label.place(relx=0.335, rely=0.47, anchor="nw")
 
-        wvol_field_label = Label(security_frame, text="Daily Volume:", bg=self.bg_color, font=self.category_font)
+        wvol_field_label = Label(security_frame, text="Avg Volume:", bg=self.bg_color, font=self.category_font)
         wvol_field_label.place(relx=0.25, rely=0.51, anchor="nw")
-        wvol_value = "Med"
+        wvol_value = f"{security_information['avg_vol']:,d}"
         wvol_value_label = Label(security_frame, text=wvol_value, bg=self.bg_color, font=self.data_font)
-        wvol_value_label.place(relx=0.42, rely=0.51, anchor="nw")
+        wvol_value_label.place(relx=0.335, rely=0.55, anchor="nw")
 
         iv_field_label = Label(security_frame, text="IV Rank:", bg=self.bg_color, font=self.category_font)
         iv_field_label.place(relx=0.25, rely=0.59, anchor="nw")
         iv_value = "120%"
         iv_value_label = Label(security_frame, text=iv_value, bg=self.bg_color, font=self.data_font)
-        iv_value_label.place(relx=0.42, rely=0.59, anchor="nw")
+        iv_value_label.place(relx=0.335, rely=0.63, anchor="nw")
 
         hiv_field_label = Label(security_frame, text="Historic IV:", bg=self.bg_color, font=self.category_font)
         hiv_field_label.place(relx=0.25, rely=0.67, anchor="nw")
         hiv_value = "20%"
         hiv_value_label = Label(security_frame, text=hiv_value, bg=self.bg_color, font=self.data_font)
-        hiv_value_label.place(relx=0.42, rely=0.67, anchor="nw")
+        hiv_value_label.place(relx=0.335, rely=0.71, anchor="nw")
 
         opt_field_label = Label(security_frame, text="Option Vol:", bg=self.bg_color, font=self.category_font)
         opt_field_label.place(relx=0.25, rely=0.75, anchor="nw")
         opt_value = "High"
         opt_value_label = Label(security_frame, text=opt_value, bg=self.bg_color, font=self.data_font)
-        opt_value_label.place(relx=0.42, rely=0.75, anchor="nw")
+        opt_value_label.place(relx=0.335, rely=0.79, anchor="nw")
 
         # Option Section
         suc_field_label = Label(security_frame, text="Success Chance:", bg=self.bg_color, font=self.category_font)
@@ -472,15 +478,15 @@ class TrendPage(LunaPage):
             title = "Daily Losers"
             # Logic to receive list from server
 
-        report_window = Frame(self.bg_frame, height=800, width=880, bg=self.bg_color)
+        report_window = Frame(self.bg_frame, height=800, width=960, bg=self.bg_color)
         report_window.place(relx=0.5, rely=0.6, anchor="center")
-        report_window_label = Label(report_window, width=800, height=880, bg=self.bg_color)
+        report_window_label = Label(report_window, width=880, height=880, bg=self.bg_color)
         report_window_label.place(relx=0.0, rely=0.0, anchor='nw')
 
         title_label = Label(report_window, text=title, font=self.menu_font, bg=self.bg_color)
         title_label.place(relx=0.5, rely=0.2, anchor="center")
 
-        report_data = Frame(report_window, height=740, width=880, bg=self.bg_color)
+        report_data = Frame(report_window, height=740, width=960, bg=self.bg_color)
         report_data.place(relx=0.5, rely=0.6, anchor="center")
 
         # Populate Table

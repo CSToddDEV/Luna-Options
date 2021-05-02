@@ -5,7 +5,7 @@ import LunaOptionsGUIClasses as gui
 root = Tk()
 
 # Set window size and make it non-resizeable
-root.geometry('880x960')
+root.geometry('960x1018')
 root.resizable(False, False)
 
 # Set Root Color
