@@ -20,7 +20,7 @@ class DBUpdate:
 
     def update_price_open(self):
         """
-        Pulls and updates price
+        Pulls and updates price at open
         """
         print("Open Update Started!")
         time = None
