@@ -31,6 +31,12 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
         super().__init__(request, client_address, server)
         self.port = 42069
 
+    def close_server(self, server_obj):
+        """
+        Closes HTTP Server
+        """
+        server_obj.shutdown()
+        server_obj.socket.close()
 
     def do_GET(self):
         path = self.path
