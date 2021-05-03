@@ -24,6 +24,7 @@ class DBUpdate:
         """
         time = None
         for ticker in self.snp.ticker_list:
+            ticker = ticker.lower()
             quote = self.api.security_quote_call(ticker)
 
             if quote:
@@ -46,6 +47,7 @@ class DBUpdate:
         """
         time = None
         for ticker in self.snp.ticker_list:
+            ticker = ticker.lower()
             quote = self.api.security_quote_call(ticker)
 
             if quote:
@@ -65,6 +67,7 @@ class DBUpdate:
         Pulls and updates volume and price at end of day
         """
         for ticker in self.snp.ticker_list:
+            ticker = ticker.lower()
             quote = self.api.security_quote_call(ticker)
 
             if quote:
@@ -94,6 +97,7 @@ class DBUpdate:
             bound = int(bound) - 12
 
         for ticker in self.snp.ticker_list:
+            ticker = ticker.lower()
             print("Updating Options for ", ticker)
             self.db.truncate_table(ticker, '_options')
             option_calls = []
