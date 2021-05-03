@@ -22,6 +22,7 @@ class DBUpdate:
         """
         Pulls and updates price
         """
+        print("Open Update Started!")
         time = None
         for ticker in self.snp.ticker_list:
             ticker = ticker.lower()
@@ -40,12 +41,13 @@ class DBUpdate:
                 self.db.update_daily_price(ticker, str(price), str(volume))
                 self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"')
 
-        print("Update Price finished at ", time)
+        print("Open update finished at ", time)
 
     def update_price(self):
         """
         Pulls and updates price
         """
+        print("Hourly Update Started!")
         time = None
         for ticker in self.snp.ticker_list:
             ticker = ticker.lower()
@@ -61,12 +63,13 @@ class DBUpdate:
                 self.db.update_daily_price(ticker, str(price), str(volume))
                 self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"')
 
-        print("Update Price finished at ", time)
+        print("Hourly update finished at ", time)
 
     def update_end_of_day(self):
         """
         Pulls and updates volume and price at end of day
         """
+        print("End of day Started!")
         for ticker in self.snp.ticker_list:
             ticker = ticker.lower()
             quote = self.api.security_quote_call(ticker)
@@ -89,6 +92,7 @@ class DBUpdate:
         """
         Pulls and updates Options
         """
+        print("Options update Started!")
         # Create the bound date 2 months out
         today = date.today()
         today = str(today).replace('-', '')
@@ -99,8 +103,6 @@ class DBUpdate:
 
         for ticker in self.snp.ticker_list:
             ticker = ticker.lower()
-            print(ticker)
-            print("Updating Options for ", ticker)
             self.db.truncate_table(ticker, '_options')
             option_calls = []
             exercise_dates = self.api.options_expiration_call(ticker)
