@@ -43,6 +43,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
+            ticker = ticker.lower()
 
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
@@ -85,6 +86,7 @@ class LunaDB:
         """
         Drop the requested table
         """
+        table = table.lower()
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
 
