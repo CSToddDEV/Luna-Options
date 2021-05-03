@@ -43,7 +43,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
-            ticker = ticker.lower()
+        ticker = ticker.lower()
 
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
@@ -100,6 +100,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
+        ticker = ticker.lower()
 
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
@@ -120,6 +121,7 @@ class LunaDB:
                 continue
             if '.' in ticker:
                 ticker = ticker.replace('.', '')
+            ticker = ticker.lower()
             for type in tables_types:
                 self.delete_table(ticker + type)
 
@@ -129,6 +131,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
+        ticker = ticker.lower()
 
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
@@ -146,6 +149,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
+        ticker = ticker.lower()
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
 
@@ -161,6 +165,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
+        ticker = ticker.lower()
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
 
@@ -175,6 +180,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
+        ticker = ticker.lower()
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
 
@@ -191,6 +197,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
+        ticker = ticker.lower()
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
 
@@ -207,6 +214,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
+        ticker = ticker.lower()
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
 
@@ -223,7 +231,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
-
+        ticker = ticker.lower()
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
 
@@ -236,6 +244,7 @@ class LunaDB:
         """
         Updates ticker table with requested information
         """
+        ticker = ticker.lower()
         self.truncate_table(ticker, '')
         self.update_column(ticker, '', 'companyName, lastUpdated, marketSentiment', company + ', ' + time + ', ' + sentiment)
 
@@ -245,7 +254,7 @@ class LunaDB:
         """
         if '.' in ticker:
             ticker = ticker.replace('.', '')
-
+        ticker = ticker.lower()
         daily_prices = self.select_daily_prices(ticker)
         high = daily_prices[0][0]
         low = daily_prices[0][0]
@@ -262,6 +271,7 @@ class LunaDB:
         """
         Curates the daily high and low to ensure that there are at most 30 entries
         """
+        ticker = ticker.lower()
         keys = self.select_column(ticker, "id", '_dailyhighandlow')
 
         low = keys[0][0]
@@ -277,6 +287,7 @@ class LunaDB:
         """
         Updates and curates the volume table for a given ticker
         """
+        ticker = ticker.lower()
         keys = self.select_column(ticker, 'id', "_volume")
 
         if keys:
@@ -299,6 +310,7 @@ class LunaDB:
         """
         Updates and curates the iv table for a given ticker
         """
+        ticker = ticker.lower()
         keys = self.select_column(ticker, 'id', "_iv")
         iv = int(float(iv)//1)
 
@@ -322,7 +334,7 @@ class LunaDB:
         """
         Updates options data for given ticker
         """
-
+        ticker = ticker.lower()
         for option in option_data:
             data = option['contractDescription']
             data = data.split()
@@ -340,6 +352,7 @@ class LunaDB:
         """
         Gets a specific ticker's information and returns it in a dictionary.
         """
+        ticker = ticker.lower()
         return_dict = {}
 
         table = self.get_table(ticker, '')

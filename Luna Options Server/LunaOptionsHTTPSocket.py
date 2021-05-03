@@ -69,6 +69,7 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
             if 'tick' in values:
                 response = self.ticker_template.copy()
                 ticker = query['tick']
+                ticker = ticker.lower()
                 response['ticker'] = ticker
 
                 data = self.db.get_ticker_info(ticker)
