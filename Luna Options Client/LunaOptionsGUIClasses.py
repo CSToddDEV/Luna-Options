@@ -9,7 +9,7 @@ class LunaPage:
     The base class for the Luna Options GUI
     """
     def __init__(self, root, bg_color):
-        self.server = 'http://localhost:42069'
+        self.server = 'http://161.35.186.108:42069'
         self.root = root
         self.homepage = None
         self.quit_page = None
