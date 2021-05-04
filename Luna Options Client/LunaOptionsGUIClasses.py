@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import font
 from PIL import ImageTk, Image
 import requests
+import os, sys
 
 
 class LunaPage:
@@ -43,7 +44,8 @@ class LunaPage:
         Label(bg_frame, text='Luna Options', font=self.title_font, bg=self.bg_color).place(relx=0.5, rely=0.1, anchor='center')
 
         # Create and Set Luna Symbol
-        luna_raw = Image.open('luna-transparent.png')
+        # luna_raw = Image.open('luna-transparent.png')
+        luna_raw = Image.open(self.resource_path("luna-transparent.png"))
         luna = ImageTk.PhotoImage(luna_raw)
         luna_label = Label(bg_frame, bg=self.bg_color, image=luna, cursor='hand2')
         luna_label.photo = luna
@@ -158,6 +160,11 @@ class LunaPage:
             self.menu_window.destroy()
         if self.report:
             self.report.destroy()
+
+    def resource_path(self, relative_path):
+        if hasattr(sys, '_MEIPASS'):
+            return os.path.join(sys._MEIPASS, relative_path)
+        return os.path.join(os.path.abspath("."), relative_path)
 
 
 class HomePage(LunaPage):
