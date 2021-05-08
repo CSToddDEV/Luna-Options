@@ -75,9 +75,14 @@ class DBUpdate:
             quote = self.api.security_quote_call(ticker)
 
             if quote:
+                time = str(datetime.now()).split('.')
+                company = quote['companyName']
+                company.replace('.', '')
                 price = quote['latestPrice']
                 volume = quote['volume']
+                sentiment = self.market_sentiment(ticker)
                 self.db.update_daily_price(ticker, str(price), str(volume))
+                self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"')
                 self.db.update_high_and_low(ticker)
                 self.db.curate_daily_high_and_low(ticker)
                 self.db.update_and_curate_volume(ticker, str(volume))
