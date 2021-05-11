@@ -3,6 +3,7 @@ from tkinter import font
 from PIL import ImageTk, Image
 import requests
 import os, sys
+import time
 
 
 class LunaPage:
@@ -21,7 +22,7 @@ class LunaPage:
         # Colors
         self.bg_color = bg_color
         self.menu_color = '#8131D3'
-        # Manu/Nav Window
+        # Menu/Nav Window
         self.menu_window = None
         self.slider = True
         # Create Fonts
@@ -44,7 +45,6 @@ class LunaPage:
         Label(bg_frame, text='Luna Options', font=self.title_font, bg=self.bg_color).place(relx=0.5, rely=0.1, anchor='center')
 
         # Create and Set Luna Symbol
-        # luna_raw = Image.open('luna-transparent.png')
         luna_raw = Image.open(self.resource_path("luna-transparent.png"))
         luna = ImageTk.PhotoImage(luna_raw)
         luna_label = Label(bg_frame, bg=self.bg_color, image=luna, cursor='hand2')
@@ -162,9 +162,27 @@ class LunaPage:
             self.report.destroy()
 
     def resource_path(self, relative_path):
+        """
+        System path locator for .exe builder
+        """
         if hasattr(sys, '_MEIPASS'):
             return os.path.join(sys._MEIPASS, relative_path)
         return os.path.join(os.path.abspath("."), relative_path)
+
+    def CreateToolTip(self, widget, text):
+        """
+        Creates tool tips
+        """
+        toolTip = ToolTip(widget, text)
+
+        def enter(event):
+            toolTip.showtip()
+
+        def leave(event):
+            toolTip.hidetip()
+
+        widget.bind('<Enter>', enter)
+        widget.bind('<Leave>', leave)
 
 
 class HomePage(LunaPage):
@@ -180,10 +198,12 @@ class HomePage(LunaPage):
         security_button = Button(self.bg_frame, width=20, height=1, text='Search a Security', bg='grey',
                                  font=self.text_font, command=self.security_search_window_link)
         security_button.place(relx=0.5, rely=0.45, anchor="center")
+        self.CreateToolTip(security_button, "If you want to search a specific security")
 
         trend_button = Button(self.bg_frame, width=20, height=1, text='Trends & Reports', bg='grey',
                                  font=self.text_font, command=self.trend_window_link)
         trend_button.place(relx=0.5, rely=0.55, anchor="center")
+        self.CreateToolTip(trend_button, "If you would like to view reports and trends")
 
 
 class QuitPage(LunaPage):
@@ -196,6 +216,7 @@ class QuitPage(LunaPage):
         quit_button = Button(self.bg_frame, width=20, height=1, text="Quit Luna Options", bg='grey',
                              font=self.text_font, command=self.bg_frame.quit)
         quit_button.place(relx=0.5, rely=0.5, anchor='center')
+        self.CreateToolTip(quit_button, "This will exit you out of Luna Options")
 
 
 class SecuritySearch(LunaPage):
@@ -214,6 +235,7 @@ class SecuritySearch(LunaPage):
         search_button = Button(self.bg_frame, text='Search Ticker', bg='grey', command=self.search_security,
                                font=self.button_font, height=1)
         search_button.place(relx=0.5, rely=0.4, anchor='nw')
+        self.CreateToolTip(search_button, "Search for security in Luna Options Database")
 
     def search_security(self):
         """
@@ -446,18 +468,22 @@ class TrendPage(LunaPage):
         highiv_button = Button(self.bg_frame, width=23, height=1, text='Highest IV Securities', bg='grey',
                                  font=self.text_font, command=self.highest_iv_report)
         highiv_button.place(relx=0.5, rely=0.45, anchor="center")
+        self.CreateToolTip(highiv_button, "Generate a report of the highest IV securities")
 
         highvol_button = Button(self.bg_frame, width=23, height=1, text='Highest Vol Securities', bg='grey',
                                  font=self.text_font, command=self.highest_vol_report)
         highvol_button.place(relx=0.5, rely=0.53, anchor="center")
+        self.CreateToolTip(highvol_button, "Generate a report of the highest volume securities")
 
         winners_button = Button(self.bg_frame, width=23, height=1, text='Daily Winners', bg='grey',
                                 font=self.text_font, command=self.daily_winners_report)
         winners_button.place(relx=0.5, rely=0.61, anchor="center")
+        self.CreateToolTip(winners_button, "Generate a report of the highest trending securities for the day")
 
         losers_button = Button(self.bg_frame, width=23, height=1, text='Daily Losers', bg='grey',
                                 font=self.text_font, command=self.daily_losers_report)
         losers_button.place(relx=0.5, rely=0.69, anchor="center")
+        self.CreateToolTip(losers_button, "Generate a report of the highest negative trending securities for the day")
 
     # Report Logic
     def create_report(self, type):
@@ -531,3 +557,36 @@ class TrendPage(LunaPage):
         Function for the daily losers report
         """
         self.create_report("lose")
+
+
+class ToolTip(object):
+
+    def __init__(self, widget, text=""):
+        self.widget = widget
+        self.tipwindow = None
+        self.id = None
+        self.x = self.y = 0
+        self.text = text
+
+    def showtip(self):
+        """
+        Display text in tooltip window
+        """
+        if self.tipwindow or not self.text:
+            return
+        x, y, cx, cy = self.widget.bbox("insert")
+        x = x + self.widget.winfo_rootx() + 107
+        y = y + cy + self.widget.winfo_rooty() +47
+        self.tipwindow = tw = Toplevel(self.widget)
+        tw.wm_overrideredirect(1)
+        tw.wm_geometry("+%d+%d" % (x, y))
+        label = Label(tw, text=self.text, justify=LEFT,
+                      background="#ffffe0", relief=SOLID, borderwidth=1,
+                      font=("tahoma", "8", "normal"))
+        label.pack(ipadx=1)
+
+    def hidetip(self):
+        tw = self.tipwindow
+        self.tipwindow = None
+        if tw:
+            tw.destroy()
