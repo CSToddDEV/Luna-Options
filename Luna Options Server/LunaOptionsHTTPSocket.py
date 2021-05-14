@@ -25,7 +25,8 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
             'm_high': None,
             'm_low': None,
             'cur_vol': None,
-            'avg_vol': None
+            'avg_vol': None,
+            'hist_volatility': None
         }
         self.db = db.LunaDB()
         super().__init__(request, client_address, server)
@@ -72,8 +73,10 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
         if query:
             values = query.keys()
 
+            response = {}
+
             if 'tick' in values:
-                response = self.ticker_template.copy()
+                response.update(self.ticker_template.copy())
                 ticker = query['tick']
                 ticker = ticker.lower()
                 response['ticker'] = ticker
@@ -81,9 +84,17 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
                 data = self.db.get_ticker_info(ticker)
                 response.update(data)
 
-                response_json = json.dumps(response)
+            if 'options' in values and str(query['options']).lower() == 'true':
+                options = {}
+                ticker = query['tick']
+                ticker = ticker.lower()
+                options['contracts'] = self.db.get_options_contracts(ticker)
 
-                return response_json
+                response.update(options)
+
+            response_json = json.dumps(response)
+
+            return response_json
 
 
 with HTTPServer(('', 42069), LunaOptionsHTTPServer) as server:

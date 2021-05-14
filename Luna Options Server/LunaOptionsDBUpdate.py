@@ -18,6 +18,13 @@ class DBUpdate:
         self.snp = snp
         self.market_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 
+    def add_historical_volatility_column(self):
+        """
+        Adds HV column to ticker tables in lunaoptionsdb
+        """
+        for ticker in self.snp.ticker_list:
+            self.db.add_column(ticker, '_options', 'historicalVolatility', 'varchar(32)')
+
     def update_price_open(self):
         """
         Pulls and updates price at open
@@ -109,6 +116,12 @@ class DBUpdate:
         for ticker in self.snp.ticker_list:
             ticker = ticker.lower()
             self.db.truncate_table(ticker, '_options')
+            hv = self.api.historical_volatility_call(ticker)
+            historical_volatility = hv['indicator'][0][0]
+            historical_volatility = float(historical_volatility)
+            historical_volatility = round(historical_volatility, 4)
+            historical_volatility = historical_volatility * 100
+            self.db.update_column(ticker, '_options', 'historicalVolatility', historical_volatility)
             option_calls = []
             exercise_dates = self.api.options_expiration_call(ticker)
             if exercise_dates:
@@ -214,3 +227,4 @@ class DBUpdate:
 
 test = DBUpdate()
 test.updater()
+# test.add_historical_volatility_column()
