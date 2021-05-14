@@ -5,11 +5,14 @@ import APICallScript as api
 import LunaOptionsDB as db
 import SandP500List as snp
 
+
 def update():
     luna = db.LunaDB()
     api_obj = api.APICalls()
     for ticker in snp.ticker_list:
-        luna.add_column(ticker, '_options', 'historicalVolatility', 'varchar(32)')
+        table = luna.get_table(ticker, '_options')
+        if len(table) > 4:
+            luna.add_column(ticker, '_options', 'historicalVolatility', 'varchar(32)')
 
         hv = api_obj.historical_volatility_call(ticker)
         if 'indicator' in hv.keys():
@@ -23,5 +26,5 @@ def update():
 
     print('Update Complete!')
 
-update()
 
+update()
