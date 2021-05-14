@@ -23,7 +23,10 @@ def update():
 
         else:
             historical_volatility = 'N/A'
-        luna.update_column_conditional(ticker, '_options', 'historicalVolatility', str(historical_volatility), 'id', '1')
+        try:
+            luna.update_column_conditional(ticker, '_options', 'historicalVolatility', str(historical_volatility), 'id', '1')
+        except:
+            pass
 
     print('Update Complete!')
 
