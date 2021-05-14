@@ -117,10 +117,13 @@ class DBUpdate:
             ticker = ticker.lower()
             self.db.truncate_table(ticker, '_options')
             hv = self.api.historical_volatility_call(ticker)
-            historical_volatility = hv['indicator'][0][0]
-            historical_volatility = float(historical_volatility)
-            historical_volatility = round(historical_volatility, 4)
-            historical_volatility = historical_volatility * 100
+            if 'indicator' in hv.keys():
+                historical_volatility = hv['indicator'][0][0]
+                historical_volatility = float(historical_volatility)
+                historical_volatility = round(historical_volatility, 4)
+                historical_volatility = historical_volatility * 100
+            else:
+                historical_volatility = 'N/A'
             self.db.update_column(ticker, '_options', 'historicalVolatility', historical_volatility)
             option_calls = []
             exercise_dates = self.api.options_expiration_call(ticker)

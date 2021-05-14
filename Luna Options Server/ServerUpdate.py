@@ -12,10 +12,13 @@ def update():
         luna.add_column(ticker, '_options', 'historicalVolatility', 'varchar(32)')
 
         hv = api_obj.historical_volatility_call(ticker)
-        historical_volatility = hv['indicator'][0][0]
-        historical_volatility = float(historical_volatility)
-        historical_volatility = round(historical_volatility, 4)
-        historical_volatility = historical_volatility * 100
+        if 'indicator' in hv.keys():
+            historical_volatility = hv['indicator'][0][0]
+            historical_volatility = float(historical_volatility)
+            historical_volatility = round(historical_volatility, 4)
+            historical_volatility = historical_volatility * 100
+        else:
+            historical_volatility = 'N/A'
         luna.update_column_conditional(ticker, '_options', 'historicalVolatility', str(historical_volatility), 'id', '1')
 
     print('Update Complete!')
