@@ -227,4 +227,4 @@ class DBUpdate:
 
 test = DBUpdate()
 test.updater()
-# test.add_historical_volatility_column()
+
