@@ -16,7 +16,7 @@ def update():
         historical_volatility = float(historical_volatility)
         historical_volatility = round(historical_volatility, 4)
         historical_volatility = historical_volatility * 100
-        luna.update_column_conditional(ticker, '_options', 'historicalVolatility', historical_volatility, 'id', '1')
+        luna.update_column_conditional(ticker, '_options', 'historicalVolatility', str(historical_volatility), 'id', '1')
 
     print('Update Complete!')
 
