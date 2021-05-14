@@ -374,7 +374,7 @@ class LunaDB:
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
 
-        sql = "IF NOT EXISTS (ALTER TABLE lunaoptionsdb." + ticker + table + " ADD " + column + " " + data_type + ')'
+        sql = "ALTER TABLE lunaoptionsdb." + ticker + table + " ADD " + column + " " + data_type + ' WHERE NOT EXISTS (SELECT ' + column + ' FROM lunaoptionsdb.' + ticker + table + ')'
         tables.execute(sql)
 
         lunaDB.commit()
