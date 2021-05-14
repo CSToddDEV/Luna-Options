@@ -15,7 +15,7 @@ def update():
             luna.add_column(ticker, '_options', 'historicalVolatility', 'varchar(32)')
 
         hv = api_obj.historical_volatility_call(ticker)
-        if 'indicator' in hv.keys():
+        if hv and 'indicator' in hv.keys():
             historical_volatility = hv['indicator'][0][0]
             historical_volatility = float(historical_volatility)
             historical_volatility = historical_volatility * 100
