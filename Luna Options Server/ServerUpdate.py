@@ -11,6 +11,7 @@ def update():
     api_obj = api.APICalls()
     for ticker in snp.ticker_list:
         table = luna.get_table(ticker, '_options')
+        print(table)
         if len(table) > 4:
             luna.add_column(ticker, '_options', 'historicalVolatility', 'varchar(32)')
 
