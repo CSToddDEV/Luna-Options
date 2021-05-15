@@ -473,10 +473,10 @@ class LunaDB:
                 print('NULL CONTRACT HV')
                 pass
             return_dict[str(contract[0])] = {
-                'exerciseDate': contract[1],
-                'type': contract[2],
-                'strikePrice': contract[3],
-                'volume': contract[4]
+                'exerciseDate': str(contract[1]),
+                'type': str(contract[2]),
+                'strikePrice': str(contract[3]),
+                'volume': str(contract[4])
             }
 
         return return_dict
