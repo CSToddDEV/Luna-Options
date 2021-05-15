@@ -472,7 +472,7 @@ class LunaDB:
             if contract[5] != 'Null':
                 print('NULL CONTRACT HV')
                 pass
-            return_dict[contract[0]] = {
+            return_dict[str(contract[0])] = {
                 'exerciseDate': contract[1],
                 'type': contract[2],
                 'strikePrice': contract[3],
