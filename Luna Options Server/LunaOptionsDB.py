@@ -470,9 +470,9 @@ class LunaDB:
         print(table)
         for contract in table:
             print(contract)
-            if contract[5] != 'Null':
-                print('NULL CONTRACT HV')
-                pass
+            # if contract[5] != 'Null':
+            #     print('NULL CONTRACT HV')
+            #     pass
             return_dict[contract[0]] = {
                 'exerciseDate': contract[1],
                 'type': contract[2],
