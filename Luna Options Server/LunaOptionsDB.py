@@ -209,6 +209,23 @@ class LunaDB:
 
         return results
 
+    def get_column_names(self, ticker, table):
+        """
+        Returns the column names for a specific table
+        """
+        if '.' in ticker:
+            ticker = ticker.replace('.', '')
+        ticker = ticker.lower()
+        lunaDB = self.DB_connect()
+        tables = lunaDB.cursor()
+
+        sql = "SELECT COLUMN_NAME  FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name='" + ticker + table + "'"
+        tables.execute(sql)
+
+        results = tables.fetchall()
+
+        return results
+
     def get_column_data_conditional(self, ticker, table, column, condition):
         """
         Returns the column data for a specified ticker, table, column
