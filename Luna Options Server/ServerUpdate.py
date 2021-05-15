@@ -14,7 +14,7 @@ def update():
         columns = luna.get_column_names(ticker, '_options')
         print(columns)
         print('Ticker ', ticker)
-        if 'historicalVolatility' not in columns:
+        if len(columns) == 5:
             print('ADDING COLUMN')
             luna.add_column(ticker, '_options', 'historicalVolatility', 'varchar(32)')
 
