@@ -467,6 +467,7 @@ class LunaDB:
         return_dict = {}
 
         table = self.get_table(ticker, '')
+        print(table)
         for contract in table:
             print(contract)
             if contract[5] != 'Null':
