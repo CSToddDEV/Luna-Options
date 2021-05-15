@@ -160,13 +160,15 @@ class DBUpdate:
 
         if total_calls > total_puts:
             if total_puts > 0:
-                percent = total_calls // total_puts
+                percent = total_calls / total_puts
+                round(percent, 2)
                 return str(percent) + '% Bullish'
             else:
                 return 'No Options'
         else:
             if total_calls != 0:
-                percent = total_puts // total_calls
+                percent = total_puts / total_calls
+                round(percent, 2)
                 return str(percent) + '% Bearish'
             else:
                 return 'No Options'
