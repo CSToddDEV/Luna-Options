@@ -13,6 +13,7 @@ def update():
         ticker.lower()
         table = luna.get_table(ticker, '_options')
         print(table)
+        print(ticker)
         if len(table[0]) == 4:
             print('ADDING COLUMN')
             luna.add_column(ticker, '_options', 'historicalVolatility', 'varchar(32)')
