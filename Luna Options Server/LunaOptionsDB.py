@@ -468,6 +468,7 @@ class LunaDB:
 
         table = self.get_table(ticker, '')
         for contract in table:
+            print(contract)
             if contract[5] != 'Null':
                 print('NULL CONTRACT HV')
                 pass
