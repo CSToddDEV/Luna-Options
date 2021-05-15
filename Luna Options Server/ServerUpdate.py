@@ -12,7 +12,8 @@ def update():
     for ticker in snp.ticker_list:
         ticker.lower()
         table = luna.get_table(ticker, '_options')
-        if table and len(table[0]) == 4:
+        print(table)
+        if len(table[0]) == 4:
             print('ADDING COLUMN')
             luna.add_column(ticker, '_options', 'historicalVolatility', 'varchar(32)')
 
