@@ -432,8 +432,8 @@ class LunaDB:
         return_dict['comp'] = table[0][1]
         return_dict['last_updated'] = table[0][2]
         return_dict['sentiment'] = table[0][3]
-        return_dict['52WeekHighIV'] = table[0][4]
-        return_dict['52WeekLowIV'] = table[0][5]
+        return_dict['52WeekHighIV'] = float(table[0][4])
+        return_dict['52WeekLowIV'] = float(table[0][5])
 
         table = self.get_column_data(ticker, '_dailyprice', 'dailyPrice')
         low = table[0]
