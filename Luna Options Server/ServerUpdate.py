@@ -4,6 +4,7 @@ Script for server updates, can change based on needs
 import APICallScript as api
 import LunaOptionsDB as db
 import SandP500List as snp
+import LunaOptionsDBUpdate as update
 
 
 # def update5_14_21():
@@ -34,5 +35,62 @@ import SandP500List as snp
 #
 #     print('Update Complete!')
 
+def update5_15_21():
+    """
+    1) Delete IV Tables
+    2) Delete TICKER_dailyvolume tables
+    3) Create new historicalIV tables
+    4) Drop historicalIV column in _options table
+    5) Add price and IV column to _options table
+    6) Add 52WeekHighIV and 52WeekLowIV to ticker table
+    7) Pull Historical IVs
+    8) Pull Options Prices
+    9) Calculate Options IVs
+    10) Update Ticker Table with High and Low IVs
+    """
 
+    print('Update 5.15.21 Started (Good Luck!)')
 
+    luna = db.LunaDB()
+    api_obj = api.APICalls()
+    updater = update.DBUpdate()
+
+    # 3
+    luna.update_tables()
+    print('# 3 Complete')
+
+    for ticker in snp.ticker_list:
+        # 1
+        ticker = ticker.lower()
+        iv_table = ticker + '_iv'
+        luna.delete_table(iv_table)
+
+        # 2
+        ticker = ticker.upper()
+        dv_table = ticker + '_dailyvolume'
+        luna.delete_table(dv_table)
+
+        # 4
+        ticker = ticker.lower()
+        luna.drop_column(ticker, '_options', 'historicalVolatility')
+
+        # 5
+        luna.add_column(ticker, '_options', 'price', 'decimal(6, 2)')
+        luna.add_column(ticker, '_options', 'IV', 'decimal(6, 2)')
+
+        # 6
+        luna.add_column(ticker, '', '52WeekHighIV', 'decimal(6, 2)')
+        luna.add_column(ticker, '', '52WeekLowIV', 'decimal(6, 2)')
+
+    print("#1 - #6 Complete! (Loop Complete!)")
+
+    # 7 - 9
+    updater.update_options()
+    print("#7 - #9 Complete!")
+
+    # 10
+    updater.update_end_of_day()
+
+    print("Server update Complete!!!")
+
+update5_15_21()

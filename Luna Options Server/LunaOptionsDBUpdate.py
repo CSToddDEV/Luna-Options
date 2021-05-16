@@ -88,8 +88,9 @@ class DBUpdate:
                 price = quote['latestPrice']
                 volume = quote['volume']
                 sentiment = self.market_sentiment(ticker)
+                high, low = self.db.get_high_low_historical_iv(ticker)
                 self.db.update_daily_price(ticker, str(price), str(volume))
-                self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"')
+                self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"', '"' + high + '"', '"' + low + '"')
                 self.db.update_high_and_low(ticker)
                 self.db.curate_daily_high_and_low(ticker)
                 self.db.update_and_curate_volume(ticker, str(volume))
@@ -118,13 +119,12 @@ class DBUpdate:
             self.db.truncate_table(ticker, '_options')
             hv = self.api.historical_volatility_call(ticker)
             if 'indicator' in hv.keys():
-                historical_volatility = hv['indicator'][0][0]
-                historical_volatility = float(historical_volatility)
-                historical_volatility = historical_volatility * 100
-                historical_volatility = round(historical_volatility, 2)
-            else:
-                historical_volatility = 'N/A'
-            self.db.update_column(ticker, '_options', 'historicalVolatility', str(historical_volatility))
+                for iv in hv['indicator'][0]:
+                    if iv is not None:
+                        iv = iv * 100
+                        round(iv, 2)
+                        self.db.update_column(ticker, '_historicalIV', 'historicalIVs', str(iv))
+
             option_calls = []
             exercise_dates = self.api.options_expiration_call(ticker)
             if exercise_dates:

@@ -2,6 +2,7 @@ import mysql.connector
 from SandP500List import ticker_list as snp
 from APIKey import db_password as pw
 from datetime import datetime
+import ImpliedVolatility as iv
 
 
 class LunaDB:
@@ -68,7 +69,7 @@ class LunaDB:
             if '.' in ticker:
                 ticker = ticker.replace('.', '')
             ticker = ticker.lower()
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, companyName varchar(255), lastUpdated varchar(32), marketSentiment varchar(32))"
+            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, companyName varchar(255), lastUpdated varchar(32), marketSentiment varchar(32), 52WeekHighIV decimal(6, 2), 52WeekLowIV decimal(6, 2))"
             tables.execute(sql)
             sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_dailyprice(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyPrice decimal(6,2))"
             tables.execute(sql)
@@ -78,9 +79,9 @@ class LunaDB:
             tables.execute(sql)
             sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_volume(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, closeVolume int, averageVolume int, totalVolume varchar(255))"
             tables.execute(sql)
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_iv(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyIV decimal(6,2), averageIV decimal(6,2), totalIV varchar(255))"
+            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_historicalIV(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, historicalIVs decimal(6,2)"
             tables.execute(sql)
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_options(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, exerciseDate date, type varchar(5), strikePrice varchar(10), volume int)"
+            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_options(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, exerciseDate date, type varchar(5), strikePrice varchar(10), volume int, price decimal(6, 2), IV decimal(6, 2))"
             tables.execute(sql)
 
     def delete_table(self, table):
@@ -273,13 +274,13 @@ class LunaDB:
 
         lunaDB.commit()
 
-    def update_ticker_table(self, ticker, company, time, sentiment):
+    def update_ticker_table(self, ticker, company, time, sentiment, high, low):
         """
         Updates ticker table with requested information
         """
         ticker = ticker.lower()
         self.truncate_table(ticker, '')
-        self.update_column(ticker, '', 'companyName, lastUpdated, marketSentiment', company + ', ' + time + ', ' + sentiment)
+        self.update_column(ticker, '', 'companyName, lastUpdated, marketSentiment, 52WeekHighIV, 52WeekLowIV', company + ', ' + time + ', ' + sentiment + ', ' + high + ', ' + low)
 
     def update_high_and_low(self, ticker):
         """
@@ -378,8 +379,13 @@ class LunaDB:
             type = data[2]
             strike = data[4]
             volume = option['volume']
+            price = option['close']
+            table = self.get_column_data(ticker, '_dailyprice', 'dailyPrice')
+            current = table[-1][0]
+            implied_volatility = iv.IV(float(price), float(current), float(strike), str(date), str(type))
+            implied_volatility_return = implied_volatility.implied_volatility()
 
-            self.update_column(ticker, '_options', 'exerciseDate, type, strikePrice, volume', str(date) + ', "' + str(type) + '", ' + str(strike) + ', ' + str(volume))
+            self.update_column(ticker, '_options', 'exerciseDate, type, strikePrice, volume, price, IV', str(date) + ', "' + str(type) + '", ' + str(strike) + ', ' + str(volume) + ', ' + str(price) + ', ' + str(implied_volatility_return))
 
     def add_column(self, ticker, table, column, data_type):
         """
@@ -396,6 +402,21 @@ class LunaDB:
 
         lunaDB.commit()
 
+    def drop_column(self, ticker, table, column):
+        """
+        Drops a given column on a given table for a given ticker
+        """
+        if '.' in ticker:
+            ticker = ticker.replace('.', '')
+        ticker = ticker.lower()
+        lunaDB = self.DB_connect()
+        tables = lunaDB.cursor()
+
+        sql = "ALTER TABLE lunaoptionsdb." + ticker + table + " DROP COLUMN " + column
+        tables.execute(sql)
+
+        lunaDB.commit()
+
     def get_ticker_info(self, ticker):
         """
         Gets a specific ticker's information and returns it in a dictionary.
@@ -407,9 +428,8 @@ class LunaDB:
         return_dict['comp'] = table[0][1]
         return_dict['last_updated'] = table[0][2]
         return_dict['sentiment'] = table[0][3]
-
-        table = self.get_table(ticker, '_options')
-        return_dict['hist_volatility'] = table[0][5]
+        return_dict['52WeekHighIV'] = table[0][4]
+        return_dict['52WeekLowIV'] = table[0][5]
 
         table = self.get_column_data(ticker, '_dailyprice', 'dailyPrice')
         low = table[0]
@@ -468,22 +488,42 @@ class LunaDB:
 
         table = self.get_table(ticker, '_options')
         for contract in table:
-            print(contract)
-            if contract[5] != 'Null':
-                print('NULL CONTRACT HV')
-                pass
             return_dict[str(contract[0])] = {
                 'exerciseDate': str(contract[1]),
                 'type': str(contract[2]),
                 'strikePrice': str(contract[3]),
-                'volume': str(contract[4])
+                'volume': str(contract[4]),
+                'price': str(contract[5]),
+                'IV': str(contract[6])
             }
 
         return return_dict
 
+    def get_high_low_historical_iv(self, ticker):
+        """
+        Returns a tuple of the highest and lowest IV in a 52 week period
+        """
+        ticker = ticker.lower()
+        data = self.get_column_data(ticker, '_historicalIV', 'historicalIVs')
+        high = data[0][0]
+        low = data[0][0]
+
+        for iv in data:
+            if iv[0] > high:
+                high = iv[0]
+            if iv[0] < low:
+                low = iv[0]
+
+        return high, low
+
+
+
 
 # test = LunaDB()
-# test.add_column('nflx', '', 'historicalVolatility', 'varchar(32)')
+# test.update_column('nflx', '_options', 'volume', '123')
+# test.update_column('nflx', '_options', 'volume', '123')
+# test.update_column('nflx', '_options', 'volume', '123')
+# print(test.get_column_data('nflx', '_options', 'volume'))
 
 # test.drop_all_tables()
 # test.update_tables()

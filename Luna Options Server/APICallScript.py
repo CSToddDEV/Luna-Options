@@ -73,7 +73,7 @@ class APICalls:
         """
         Calls and returns passed security's historical volatility from IEXCloud
         """
-        response = requests.get("https://cloud.iexapis.com/stable/stock/" + ticker + "/indicator/volatility/?range=6m&indicatorOnly=true&lastIndicator=true&token=" + self.iex_key)
+        response = requests.get("https://cloud.iexapis.com/stable/stock/" + ticker + "/indicator/volatility/?range=1y&indicatorOnly=true&token=" + self.iex_key)
 
         if response.status_code == 200:
             return response.json()
@@ -90,5 +90,5 @@ class APIError(Exception):
         super().__init__(self.message)
 
 
-# call = APICalls()
-# print(call.historical_volatility_call("nflx"))
+call = APICalls()
+print(call.historical_volatility_call("nflx"))
