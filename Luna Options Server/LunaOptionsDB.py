@@ -75,7 +75,7 @@ class LunaDB:
             tables.execute(sql)
             sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_dailyhighandlow(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyHigh decimal(6,2), dailyLow decimal(6,2))"
             tables.execute(sql)
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_dailyvolume(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyVolume int)"
+            sql = "CREATE TABLE IF NOT EXISTS " + ticker.lower() + "_dailyvolume(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyVolume int)"
             tables.execute(sql)
             sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_volume(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, closeVolume int, averageVolume int, totalVolume varchar(255))"
             tables.execute(sql)
