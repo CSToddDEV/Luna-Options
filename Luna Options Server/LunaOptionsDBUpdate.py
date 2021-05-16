@@ -118,7 +118,7 @@ class DBUpdate:
             ticker = ticker.lower()
             self.db.truncate_table(ticker, '_options')
             hv = self.api.historical_volatility_call(ticker)
-            if 'indicator' in hv.keys():
+            if hv and 'indicator' in hv.keys():
                 for iv in hv['indicator'][0]:
                     if iv is not None:
                         iv = iv * 100
