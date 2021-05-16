@@ -45,6 +45,7 @@ class IV:
         else:
             flag = 'p'
 
+        print(self._option_price, self._ticker_price, self._strike_price, expiration, flag)
         implied_volatility = iv.implied_volatility_of_undiscounted_option_price(self._option_price, self._ticker_price, self._strike_price, expiration, flag) * 100
 
         return round(implied_volatility, 2)
