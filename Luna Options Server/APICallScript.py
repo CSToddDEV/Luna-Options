@@ -90,5 +90,5 @@ class APIError(Exception):
         super().__init__(self.message)
 
 
-call = APICalls()
-print(call.historical_volatility_call("nflx"))
+# call = APICalls()
+# print(call.historical_volatility_call("nflx"))
