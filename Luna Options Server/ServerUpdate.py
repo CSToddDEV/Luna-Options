@@ -65,24 +65,39 @@ def update5_15_21():
             ticker = ticker.replace('.', '')
         ticker = ticker.lower()
         iv_table = ticker + '_iv'
-        luna.delete_table(iv_table)
+        try:
+            luna.delete_table(iv_table)
+        except:
+            print('#1 skipped for ', ticker)
 
         # 2
         ticker = ticker.upper()
         dv_table = ticker + '_dailyvolume'
-        luna.delete_table(dv_table)
+        try:
+            luna.delete_table(dv_table)
+        except:
+            print('#2 skipped for ', ticker)
 
         # 4
         ticker = ticker.lower()
-        luna.drop_column(ticker, '_options', 'historicalVolatility')
+        try:
+            luna.drop_column(ticker, '_options', 'historicalVolatility')
+        except:
+            print('#3 skipped for ', ticker)
 
         # 5
-        luna.add_column(ticker, '_options', 'price', 'decimal(6, 2)')
-        luna.add_column(ticker, '_options', 'IV', 'decimal(6, 2)')
+        try:
+            luna.add_column(ticker, '_options', 'price', 'decimal(6, 2)')
+            luna.add_column(ticker, '_options', 'IV', 'decimal(6, 2)')
+        except:
+            print('#5 skipped for ', ticker)
 
         # 6
-        luna.add_column(ticker, '', '52WeekHighIV', 'decimal(6, 2)')
-        luna.add_column(ticker, '', '52WeekLowIV', 'decimal(6, 2)')
+        try:
+            luna.add_column(ticker, '', '52WeekHighIV', 'decimal(6, 2)')
+            luna.add_column(ticker, '', '52WeekLowIV', 'decimal(6, 2)')
+        except:
+            print('#6 skipped for ', ticker)
 
     print("#1 - #6 Complete! (Loop Complete!)")
 
