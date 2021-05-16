@@ -25,7 +25,8 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
             'm_high': None,
             'm_low': None,
             'cur_vol': None,
-            'avg_vol': None
+            'avg_vol': None,
+            'current_IV': None
         }
         self.db = db.LunaDB()
         super().__init__(request, client_address, server)
