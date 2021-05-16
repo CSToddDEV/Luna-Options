@@ -59,47 +59,47 @@ def update5_15_21():
     # luna.update_tables()
     # print('# 3 Complete')
 
-    for ticker in snp.ticker_list:
-        # 1
-        if '.' in ticker:
-            ticker = ticker.replace('.', '')
-        ticker = ticker.lower()
-        iv_table = ticker + '_iv'
-        try:
-            luna.delete_table(iv_table)
-        except:
-            print('#1 skipped for ', ticker)
-
-        # 2
-        ticker = ticker.upper()
-        dv_table = ticker + '_dailyvolume'
-        try:
-            luna.delete_table(dv_table)
-        except:
-            print('#2 skipped for ', ticker)
-
-        # 4
-        ticker = ticker.lower()
-        try:
-            luna.drop_column(ticker, '_options', 'historicalVolatility')
-        except:
-            print('#3 skipped for ', ticker)
-
-        # 5
-        try:
-            luna.add_column(ticker, '_options', 'price', 'decimal(6, 2)')
-            luna.add_column(ticker, '_options', 'IV', 'decimal(6, 2)')
-        except:
-            print('#5 skipped for ', ticker)
-
-        # 6
-        try:
-            luna.add_column(ticker, '', '52WeekHighIV', 'decimal(6, 2)')
-            luna.add_column(ticker, '', '52WeekLowIV', 'decimal(6, 2)')
-        except:
-            print('#6 skipped for ', ticker)
-
-    print("#1 - #6 Complete! (Loop Complete!)")
+    # for ticker in snp.ticker_list:
+    #     # 1
+    #     if '.' in ticker:
+    #         ticker = ticker.replace('.', '')
+    #     ticker = ticker.lower()
+    #     iv_table = ticker + '_iv'
+    #     try:
+    #         luna.delete_table(iv_table)
+    #     except:
+    #         print('#1 skipped for ', ticker)
+    #
+    #     # 2
+    #     ticker = ticker.upper()
+    #     dv_table = ticker + '_dailyvolume'
+    #     try:
+    #         luna.delete_table(dv_table)
+    #     except:
+    #         print('#2 skipped for ', ticker)
+    #
+    #     # 4
+    #     ticker = ticker.lower()
+    #     try:
+    #         luna.drop_column(ticker, '_options', 'historicalVolatility')
+    #     except:
+    #         print('#3 skipped for ', ticker)
+    #
+    #     # 5
+    #     try:
+    #         luna.add_column(ticker, '_options', 'price', 'decimal(6, 2)')
+    #         luna.add_column(ticker, '_options', 'IV', 'decimal(6, 2)')
+    #     except:
+    #         print('#5 skipped for ', ticker)
+    #
+    #     # 6
+    #     try:
+    #         luna.add_column(ticker, '', '52WeekHighIV', 'decimal(6, 2)')
+    #         luna.add_column(ticker, '', '52WeekLowIV', 'decimal(6, 2)')
+    #     except:
+    #         print('#6 skipped for ', ticker)
+    #
+    # print("#1 - #6 Complete! (Loop Complete!)")
 
     # 7 - 9
     updater.update_options()

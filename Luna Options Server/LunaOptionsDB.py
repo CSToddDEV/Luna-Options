@@ -375,6 +375,7 @@ class LunaDB:
 
             date = data[3]
             date = date.split('/')
+            iv_date = date[2] + '-' + date[1] + '-' + date[0]
             date = date[2] + date[1] + date[0]
             type = data[2]
             strike = data[4]
@@ -382,7 +383,7 @@ class LunaDB:
             price = option['close']
             table = self.get_column_data(ticker, '_dailyprice', 'dailyPrice')
             current = table[-1][0]
-            implied_volatility = iv.IV(float(price), float(current), float(strike), str(date), str(type))
+            implied_volatility = iv.IV(float(price), float(current), float(strike), str(iv_date), str(type))
             implied_volatility_return = implied_volatility.implied_volatility()
 
             self.update_column(ticker, '_options', 'exerciseDate, type, strikePrice, volume, price, IV', str(date) + ', "' + str(type) + '", ' + str(strike) + ', ' + str(volume) + ', ' + str(price) + ', ' + str(implied_volatility_return))
