@@ -59,10 +59,10 @@ def update5_15_21():
     # luna.update_tables()
     # print('# 3 Complete')
 
-    for ticker in snp.ticker_list:
-        # 1
-        if '.' in ticker:
-            ticker = ticker.replace('.', '')
+    # for ticker in snp.ticker_list:
+    #     # 1
+    #     if '.' in ticker:
+    #         ticker = ticker.replace('.', '')
         # ticker = ticker.lower()
         # iv_table = ticker + '_iv'
         # try:
@@ -72,11 +72,11 @@ def update5_15_21():
 
         # 2
         # ticker = ticker.upper()
-        dv_table = ticker + '_dailyvolume'
-        try:
-            luna.delete_table(dv_table)
-        except:
-            print('#2 skipped for ', ticker)
+        # dv_table = ticker + '_dailyvolume'
+        # try:
+        #     luna.delete_table(dv_table)
+        # except:
+        #     print('#2 skipped for ', ticker)
     #
     #     # 4
     #     ticker = ticker.lower()
@@ -99,14 +99,14 @@ def update5_15_21():
     #     except:
     #         print('#6 skipped for ', ticker)
     #
-    print("#1 - #6 Complete! (Loop Complete!)")
+    # print("#1 - #6 Complete! (Loop Complete!)")
 
     # 7 - 9
     # updater.update_options()
     # print("#7 - #9 Complete!")
 
     # 10
-    luna.update_tables()
+    # luna.update_tables()
     updater.update_price()
     updater.update_end_of_day()
 

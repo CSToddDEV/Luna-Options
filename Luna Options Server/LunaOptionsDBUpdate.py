@@ -72,7 +72,7 @@ class DBUpdate:
                     high, low = 0, 0
                 sentiment = self.market_sentiment(ticker)
                 self.db.update_daily_price(ticker, str(price), str(volume))
-                self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"', '"' + high + '"', '"' + low + '"')
+                self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"', '"' + str(high) + '"', '"' + str(low) + '"')
 
         print("Hourly update finished at ", time)
 
@@ -97,7 +97,7 @@ class DBUpdate:
                 except:
                     high, low = 0, 0
                 self.db.update_daily_price(ticker, str(price), str(volume))
-                self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"', '"' + high + '"', '"' + low + '"')
+                self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"', '"' + str(high) + '"', '"' + str(low) + '"')
                 self.db.update_high_and_low(ticker)
                 self.db.curate_daily_high_and_low(ticker)
                 self.db.update_and_curate_volume(ticker, str(volume))
