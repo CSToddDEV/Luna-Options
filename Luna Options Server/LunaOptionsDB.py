@@ -435,7 +435,7 @@ class LunaDB:
         return_dict['52WeekHighIV'] = float(table[0][4])
         return_dict['52WeekLowIV'] = float(table[0][5])
 
-        table = self.get_column_data(ticker, '_historicalVolatility', 'historicalIVs')
+        table = self.get_column_data(ticker, '_historicalIV', 'historicalIVs')
         return_dict['current_IV'] = float(table[-1][1])
 
         table = self.get_column_data(ticker, '_dailyprice', 'dailyPrice')
