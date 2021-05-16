@@ -71,7 +71,7 @@ def update5_15_21():
         #     print('#1 skipped for ', ticker)
 
         # 2
-        ticker = ticker.upper()
+        # ticker = ticker.upper()
         dv_table = ticker + '_dailyvolume'
         try:
             luna.delete_table(dv_table)
