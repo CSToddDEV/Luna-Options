@@ -55,12 +55,14 @@ def update5_15_21():
     api_obj = api.APICalls()
     updater = update.DBUpdate()
 
-    # 3
-    luna.update_tables()
-    print('# 3 Complete')
+    # # 3
+    # luna.update_tables()
+    # print('# 3 Complete')
 
     for ticker in snp.ticker_list:
         # 1
+        if '.' in ticker:
+            ticker = ticker.replace('.', '')
         ticker = ticker.lower()
         iv_table = ticker + '_iv'
         luna.delete_table(iv_table)
