@@ -92,6 +92,7 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
 
                 response.update(options)
 
+            print(response)
             response_json = json.dumps(response, separators=(',', ':'))
 
             return response_json
