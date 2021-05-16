@@ -102,8 +102,8 @@ def update5_15_21():
     # print("#1 - #6 Complete! (Loop Complete!)")
 
     # 7 - 9
-    updater.update_options()
-    print("#7 - #9 Complete!")
+    # updater.update_options()
+    # print("#7 - #9 Complete!")
 
     # 10
     updater.update_end_of_day()

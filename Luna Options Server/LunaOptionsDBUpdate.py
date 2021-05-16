@@ -88,7 +88,10 @@ class DBUpdate:
                 price = quote['latestPrice']
                 volume = quote['volume']
                 sentiment = self.market_sentiment(ticker)
-                high, low = self.db.get_high_low_historical_iv(ticker)
+                try:
+                    high, low = self.db.get_high_low_historical_iv(ticker)
+                except:
+                    high, low = 0, 0
                 self.db.update_daily_price(ticker, str(price), str(volume))
                 self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"', '"' + high + '"', '"' + low + '"')
                 self.db.update_high_and_low(ticker)

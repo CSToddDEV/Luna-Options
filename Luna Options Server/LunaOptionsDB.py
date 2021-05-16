@@ -382,7 +382,10 @@ class LunaDB:
             volume = option['volume']
             price = option['close']
             table = self.get_column_data(ticker, '_dailyprice', 'dailyPrice')
-            current = table[-1][0]
+            if table:
+                current = table[-1][0]
+            else:
+                current = 00.00
             implied_volatility = iv.IV(float(price), float(current), float(strike), str(iv_date), str(type))
             implied_volatility_return = implied_volatility.implied_volatility()
 
