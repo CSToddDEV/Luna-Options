@@ -238,5 +238,5 @@ class DBUpdate:
 
 
 test = DBUpdate()
-# test.updater()
+test.updater()
 

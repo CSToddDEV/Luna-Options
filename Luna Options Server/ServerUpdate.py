@@ -35,25 +35,25 @@ import LunaOptionsDBUpdate as update
 #
 #     print('Update Complete!')
 
-def update5_15_21():
-    """
-    1) Delete IV Tables
-    2) Delete TICKER_dailyvolume tables
-    3) Create new historicalIV tables
-    4) Drop historicalIV column in _options table
-    5) Add price and IV column to _options table
-    6) Add 52WeekHighIV and 52WeekLowIV to ticker table
-    7) Pull Historical IVs
-    8) Pull Options Prices
-    9) Calculate Options IVs
-    10) Update Ticker Table with High and Low IVs
-    """
-
-    print('Update 5.15.21 Started (Good Luck!)')
-
-    luna = db.LunaDB()
-    api_obj = api.APICalls()
-    updater = update.DBUpdate()
+# def update5_15_21():
+#     """
+#     1) Delete IV Tables
+#     2) Delete TICKER_dailyvolume tables
+#     3) Create new historicalIV tables
+#     4) Drop historicalIV column in _options table
+#     5) Add price and IV column to _options table
+#     6) Add 52WeekHighIV and 52WeekLowIV to ticker table
+#     7) Pull Historical IVs
+#     8) Pull Options Prices
+#     9) Calculate Options IVs
+#     10) Update Ticker Table with High and Low IVs
+#     """
+#
+#     print('Update 5.15.21 Started (Good Luck!)')
+#
+#     luna = db.LunaDB()
+#     api_obj = api.APICalls()
+#     updater = update.DBUpdate()
 
     # # 3
     # luna.update_tables()
@@ -106,10 +106,8 @@ def update5_15_21():
     # print("#7 - #9 Complete!")
 
     # 10
-    # luna.update_tables()
-    updater.update_price()
-    updater.update_end_of_day()
+    # updater.update_price()
+    # updater.update_end_of_day()
+    #
+    # print("Server update Complete!!!")
 
-    print("Server update Complete!!!")
-
-update5_15_21()
