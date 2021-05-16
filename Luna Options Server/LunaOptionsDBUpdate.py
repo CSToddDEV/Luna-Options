@@ -129,7 +129,7 @@ class DBUpdate:
                 for iv in hv['indicator'][0]:
                     if iv is not None:
                         iv = iv * 100
-                        round(iv, 2)
+                        iv = round(iv, 2)
                         self.db.update_column(ticker, '_historicalIV', 'historicalIVs', str(iv))
 
             option_calls = []
@@ -168,14 +168,14 @@ class DBUpdate:
         if total_calls > total_puts:
             if total_puts > 0:
                 percent = total_calls / total_puts
-                round(percent, 2)
+                percent = round(percent, 2)
                 return str(percent) + '% Bullish'
             else:
                 return 'No Options'
         else:
             if total_calls != 0:
                 percent = total_puts / total_calls
-                round(percent, 2)
+                percent = round(percent, 2)
                 return str(percent) + '% Bearish'
             else:
                 return 'No Options'
