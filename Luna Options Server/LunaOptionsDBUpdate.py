@@ -124,6 +124,7 @@ class DBUpdate:
         for ticker in self.snp.ticker_list:
             ticker = ticker.lower()
             self.db.truncate_table(ticker, '_options')
+            self.db.truncate_table(ticker, '_historicalIV')
             hv = self.api.historical_volatility_call(ticker)
             if hv and 'indicator' in hv.keys():
                 for iv in hv['indicator'][0]:
