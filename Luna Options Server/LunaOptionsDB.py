@@ -79,7 +79,7 @@ class LunaDB:
             tables.execute(sql)
             sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_volume(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, closeVolume int, averageVolume int, totalVolume varchar(255))"
             tables.execute(sql)
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_historicalIV(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, historicalIVs decimal(6,2)"
+            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_historicalIV(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, historicalIVs decimal(6,2))"
             tables.execute(sql)
             sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_options(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, exerciseDate date, type varchar(5), strikePrice varchar(10), volume int, price decimal(6, 2), IV decimal(6, 2))"
             tables.execute(sql)
