@@ -44,9 +44,13 @@ class DBUpdate:
                 company = quote['companyName']
                 company = company.replace('.', '')
                 volume = quote['volume']
+                try:
+                    high, low = self.db.get_high_low_historical_iv(ticker)
+                except:
+                    high, low = 0, 0
                 sentiment = self.market_sentiment(ticker)
                 self.db.update_daily_price(ticker, str(price), str(volume))
-                self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"')
+                self.db.update_ticker_table(ticker, '"' + company + '"', '"' + time[0] + '"', '"' + sentiment + '"', '"' + str(high) + '"', '"' + str(low) + '"')
 
         print("Open update finished at ", time)
 
