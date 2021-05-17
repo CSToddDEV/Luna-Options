@@ -92,6 +92,12 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
 
                 response.update(options)
 
+            if 'top_iv' in values and str(query['top_iv']).lower() == 'true':
+                top_ivs = {}
+                top_ivs['top_50'] = self.db.get_top_50()
+
+                response.update(top_ivs)
+
             print(response)
             response_json = json.dumps(response, separators=(',', ':'))
 

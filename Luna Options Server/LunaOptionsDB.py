@@ -56,33 +56,37 @@ class LunaDB:
         column_data = tables.fetchall()
         return column_data
 
-    def update_tables(self):
+    def update_tables(self, tickers=True):
         """
         Updates the tables in LunarOprtionsDB with the current tickers
         """
         lunaDB = self.DB_connect()
         tables = lunaDB.cursor()
 
-        for ticker in snp:
-            if ticker == "ALL" or ticker == "KEY":
-                continue
-            if '.' in ticker:
-                ticker = ticker.replace('.', '')
-            ticker = ticker.lower()
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, companyName varchar(255), lastUpdated varchar(32), marketSentiment varchar(32), 52WeekHighIV decimal(6, 2), 52WeekLowIV decimal(6, 2))"
-            tables.execute(sql)
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_dailyprice(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyPrice decimal(6,2))"
-            tables.execute(sql)
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_dailyhighandlow(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyHigh decimal(6,2), dailyLow decimal(6,2))"
-            tables.execute(sql)
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker.lower() + "_dailyvolume(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyVolume int)"
-            tables.execute(sql)
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_volume(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, closeVolume int, averageVolume int, totalVolume varchar(255))"
-            tables.execute(sql)
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_historicalIV(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, historicalIVs decimal(6,2))"
-            tables.execute(sql)
-            sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_options(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, exerciseDate date, type varchar(5), strikePrice varchar(10), volume int, price decimal(6, 2), IV decimal(6, 2))"
-            tables.execute(sql)
+        sql = "CREATE TABLE IF NOT EXISTS top_iv_table(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, ticker varchar(255), currentIV decimal(6, 2))"
+        tables.execute(sql)
+
+        if tickers:
+            for ticker in snp:
+                if ticker == "ALL" or ticker == "KEY":
+                    continue
+                if '.' in ticker:
+                    ticker = ticker.replace('.', '')
+                ticker = ticker.lower()
+                sql = "CREATE TABLE IF NOT EXISTS " + ticker + "(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, companyName varchar(255), lastUpdated varchar(32), marketSentiment varchar(32), 52WeekHighIV decimal(6, 2), 52WeekLowIV decimal(6, 2))"
+                tables.execute(sql)
+                sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_dailyprice(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyPrice decimal(6,2))"
+                tables.execute(sql)
+                sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_dailyhighandlow(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyHigh decimal(6,2), dailyLow decimal(6,2))"
+                tables.execute(sql)
+                sql = "CREATE TABLE IF NOT EXISTS " + ticker.lower() + "_dailyvolume(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, dailyVolume int)"
+                tables.execute(sql)
+                sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_volume(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, closeVolume int, averageVolume int, totalVolume varchar(255))"
+                tables.execute(sql)
+                sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_historicalIV(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, historicalIVs decimal(6,2))"
+                tables.execute(sql)
+                sql = "CREATE TABLE IF NOT EXISTS " + ticker + "_options(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, exerciseDate date, type varchar(5), strikePrice varchar(10), volume int, price decimal(6, 2), IV decimal(6, 2))"
+                tables.execute(sql)
 
     def delete_table(self, table):
         """
@@ -523,6 +527,60 @@ class LunaDB:
 
         return high, low
 
+    def update_high_iv_table(self):
+        """
+        Updates the high iv table in lunaoptionsDB
+        """
+        ivs = []
+        for ticker in snp:
+            if '.' in ticker:
+                ticker = ticker.replace('.', '')
+            table = self.get_column_data(ticker, '_historicalIV', 'historicalIVs')
+            cur_iv = (table[-1][0], ticker)
+            ivs.append(cur_iv)
+
+        # Sort IVS
+        self.quick_sort(ivs, 0, len(ivs)-1)
+
+        # Append top 50 IV securities
+        for i in reversed(range(len(ivs))):
+            self.update_column('top_iv_table', '', 'ticker, currentIV', str(ivs[i][1]) + ", " + str(ivs[i][0]))
+
+    def quick_sort(self, array, low, high):
+        """
+        Quicksort method
+        """
+        if len(array) == 1:
+            return array
+        if low < high:
+            mid = self.quick_sort_helper(array, low, high)
+
+            self.quick_sort(array, low, mid - 1)
+            self.quick_sort(array, mid + 1, high)
+
+    def quick_sort_helper(self, array, low, high):
+        """
+        Quicksort method helper
+        """
+        i = (low - 1)
+
+        pivot = array[high][0]
+
+        for j in range(low, high):
+            if array[j][0] <= pivot:
+                i = i + 1
+                array[i], array[j] = array[j], array[i]
+
+        array[i + 1], array[high] = array[high], array[i + 1]
+
+        return i + 1
+
+    def get_top_50(self):
+        """
+        Returns the top 50 current security IV
+        """
+        data = self.get_table('top_iv_table', '')
+        return data
 
 
 
