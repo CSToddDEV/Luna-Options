@@ -536,8 +536,9 @@ class LunaDB:
             if '.' in ticker:
                 ticker = ticker.replace('.', '')
             table = self.get_column_data(ticker, '_historicalIV', 'historicalIVs')
-            cur_iv = (table[-1][0], ticker)
-            ivs.append(cur_iv)
+            if table:
+                cur_iv = (table[-1][0], ticker)
+                ivs.append(cur_iv)
 
         # Sort IVS
         self.quick_sort(ivs, 0, len(ivs)-1)
