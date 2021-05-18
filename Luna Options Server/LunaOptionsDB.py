@@ -581,8 +581,11 @@ class LunaDB:
         """
         Returns the top 50 current security IV
         """
+        return_data = []
         data = self.get_table('top_iv_table', '')
-        return data
+        for point in data:
+            return_data.append((str(point[1]), str(point[2])))
+        return return_data
 
 
 
