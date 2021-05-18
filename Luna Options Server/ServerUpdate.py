@@ -4,7 +4,7 @@ Script for server updates, can change based on needs
 import APICallScript as api
 import LunaOptionsDB as db
 import SandP500List as snp
-import LunaOptionsDBUpdate as update
+from LunaOptionsDBUpdate import DBUpdate as update
 
 
 # def update5_14_21():
@@ -111,21 +111,22 @@ import LunaOptionsDBUpdate as update
     #
     # print("Server update Complete!!!")
 
-def update_5_17_21():
-    """
-    1) Update lunaoptionsDB with Top IV Security table
-    2) Pull Current list of IV securities and write to table
-    3) Update HTTP request to return list to client
-    """
-    luna = db.LunaDB()
+# def update_5_17_21():
+#     """
+#     1) Update lunaoptionsDB with Top IV Security table
+#     2) Pull Current list of IV securities and write to table
+#     3) Update HTTP request to return list to client
+#     """
+#     luna = db.LunaDB()
+#
+#     print(" Server update Started")
+#     # 1
+#     luna.update_tables(False)
+#
+#     # 2
+#     luna.update_high_iv_table()
+#
+#     print("Server Update Finished!")
 
-    print(" Server update Started")
-    # 1
-    luna.update_tables(False)
-
-    # 2
-    luna.update_high_iv_table()
-
-    print("Server Update Finished!")
-
-update_5_17_21()
+luna = db.LunaDB()
+print(luna.get_top_50())
