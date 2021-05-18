@@ -494,7 +494,12 @@ class TrendPage(LunaPage):
             symbol = "%"
             color = "black"
             title = "Highest Daily IV Securities"
-            # Logic to receive list from server
+            dict_call = 'top_50'
+            params = {
+                'top_iv': True
+            }
+            json = requests.get(self.server, params)
+            data = json.json()
         elif type == "vol":
             symbol = "M"
             color = "black"
@@ -523,12 +528,10 @@ class TrendPage(LunaPage):
         report_data.place(relx=0.5, rely=0.6, anchor="center")
 
         # Populate Table
-        data = "xx"
-        security = "XYZ"
         i = 1
         for row in range(10):
             for column in range(5):
-                info = str(i) + '. ' + security + " " + data + symbol
+                info = str(i) + '. ' + data[dict_call][i-1][0] + " " + data[dict_call][i-1][1] + symbol
                 Label(report_data, text=info, bg=self.bg_color, fg=color, font=self.report_font).grid(row=row, column=column, padx=10, pady=12)
                 i += 1
 
