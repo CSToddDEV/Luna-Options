@@ -532,6 +532,7 @@ class LunaDB:
         Updates the high iv table in lunaoptionsDB
         """
         ivs = []
+        self.truncate_table('top_ive_table', '')
         for ticker in snp:
             if '.' in ticker:
                 ticker = ticker.replace('.', '')
@@ -544,7 +545,7 @@ class LunaDB:
         self.quick_sort(ivs, 0, len(ivs)-1)
 
         # Append top 50 IV securities
-        for i in reversed(range(len(ivs))):
+        for i in reversed(range(len(ivs), len(ivs)-50)):
             print('ticker, currentIV', str(ivs[i][1]) + ", " + str(ivs[i][0]))
             self.update_column('top_iv_table', '', 'ticker, currentIV', "'" + str(ivs[i][1]) + "'" + ", " + str(ivs[i][0]))
 
