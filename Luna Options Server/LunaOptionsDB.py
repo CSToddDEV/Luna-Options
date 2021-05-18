@@ -259,6 +259,7 @@ class LunaDB:
         tables = lunaDB.cursor()
 
         sql = "INSERT INTO lunaoptionsdb." + ticker + table + "(" + column + ") VALUES (" + value + ")"
+        print(sql)
         tables.execute(sql)
 
         lunaDB.commit()
