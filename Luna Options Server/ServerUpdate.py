@@ -127,7 +127,3 @@ from LunaOptionsDBUpdate import DBUpdate as update
 #     luna.update_high_iv_table()
 #
 #     print("Server Update Finished!")
-
-luna = db.LunaDB()
-luna.update_high_iv_table()
-print(luna.get_top_50())
