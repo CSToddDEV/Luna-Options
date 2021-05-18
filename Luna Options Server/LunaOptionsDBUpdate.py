@@ -242,6 +242,7 @@ class DBUpdate:
             time.sleep(1)
 
 
-test = DBUpdate()
-test.updater()
+if __name__ == "__main__":
+    test = DBUpdate()
+    test.updater()
 
