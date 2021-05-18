@@ -532,7 +532,7 @@ class LunaDB:
         Updates the high iv table in lunaoptionsDB
         """
         ivs = []
-        self.truncate_table('top_ive_table', '')
+        self.truncate_table('top_iv_table', '')
         for ticker in snp:
             if '.' in ticker:
                 ticker = ticker.replace('.', '')
