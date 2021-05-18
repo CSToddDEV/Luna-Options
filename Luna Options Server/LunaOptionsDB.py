@@ -545,9 +545,13 @@ class LunaDB:
         self.quick_sort(ivs, 0, len(ivs)-1)
 
         # Append top 50 IV securities
-        for i in reversed(range(len(ivs), len(ivs)-50)):
+        counter = 0
+        for i in reversed(range(len(ivs))):
+            if counter > 50:
+                break
             print('ticker, currentIV', str(ivs[i][1]) + ", " + str(ivs[i][0]))
             self.update_column('top_iv_table', '', 'ticker, currentIV', "'" + str(ivs[i][1]) + "'" + ", " + str(ivs[i][0]))
+            counter += 1
 
     def quick_sort(self, array, low, high):
         """
