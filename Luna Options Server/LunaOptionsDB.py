@@ -3,7 +3,7 @@ from SandP500List import ticker_list as snp
 from APIKey import db_password as pw
 from datetime import datetime
 import ImpliedVolatility as iv
-import LunaOptionsHTTPSocket as http_get
+from LunaOptionsHTTPSocket import get_IV_rank as http_get
 
 
 class LunaDB:
@@ -604,9 +604,8 @@ class LunaDB:
         Updates the IV Rank column for a given ticker.
         """
         # Will update when team mate finishes services
-        get_request = http_get.LunaOptionsHTTPServer()
-        IV_rank = get_request.get_IV_rank(ticker)
-        self.update_column_conditional(ticker, '', 'iv_rank', IV_rank, 'id', '1')
+        # IV_rank = http_get(ticker)
+        # self.update_column_conditional(ticker, '', 'iv_rank', IV_rank, 'id', '1')
 
         pass
 
