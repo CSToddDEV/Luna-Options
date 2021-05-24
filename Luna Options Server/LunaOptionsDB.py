@@ -3,6 +3,7 @@ from SandP500List import ticker_list as snp
 from APIKey import db_password as pw
 from datetime import datetime
 import ImpliedVolatility as iv
+import LunaOptionsHTTPSocket as http_get
 
 
 class LunaDB:
@@ -532,15 +533,21 @@ class LunaDB:
         Updates the high iv table in lunaoptionsDB
         """
         ivs = []
+        bullish = []
+        bearish = []
         self.truncate_table('top_iv_table', '')
         for ticker in snp:
             if '.' in ticker:
                 ticker = ticker.replace('.', '')
             table = self.get_column_data(ticker, '_historicalIV', 'historicalIVs')
+            # sentiment = self.get_column_data(ticker, '', 'marketSentiment')
             if table:
                 cur_iv = (table[-1][0], ticker)
                 ivs.append(cur_iv)
-
+            # if sentiment:
+            #     if bullish in sentiment[-1][0]:
+            #         sent = (sentiment[-1][0], ticker)
+            #         bullish.append(sent)
         # Sort IVS
         self.quick_sort(ivs, 0, len(ivs)-1)
 
@@ -591,6 +598,17 @@ class LunaDB:
         for point in data:
             return_data.append((str(point[1]), str(point[2])))
         return return_data
+
+    def update_IV_rank(self, ticker):
+        """
+        Updates the IV Rank column for a given ticker.
+        """
+        # Will update when team mate finishes services
+        get_request = http_get.LunaOptionsHTTPServer()
+        IV_rank = get_request.get_IV_rank(ticker)
+        self.update_column_conditional(ticker, '', 'iv_rank', IV_rank, 'id', '1')
+
+        pass
 
 
 

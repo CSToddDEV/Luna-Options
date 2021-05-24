@@ -8,6 +8,7 @@ from datetime import date, datetime
 import time
 import schedule
 
+
 class DBUpdate:
     """
     Luna Options Database Update Class
@@ -96,6 +97,7 @@ class DBUpdate:
                 price = quote['latestPrice']
                 volume = quote['volume']
                 sentiment = self.market_sentiment(ticker)
+
                 try:
                     high, low = self.db.get_high_low_historical_iv(ticker)
                 except:
@@ -105,6 +107,8 @@ class DBUpdate:
                 self.db.update_high_and_low(ticker)
                 self.db.curate_daily_high_and_low(ticker)
                 self.db.update_and_curate_volume(ticker, str(volume))
+                # Update IV Rank when team mate finishes service
+                # self.db.update_IV_rank(ticker)
 
         now = datetime.now()
         today = datetime.today()
