@@ -128,27 +128,26 @@ from LunaOptionsDBUpdate import DBUpdate as update
 #
 #     print("Server Update Finished!")
 
-def update_5_24_21():
-    """
-    # 1 Add tickers SPY, GME, AMC, and QQQ to tables
-    # 2 Add IVRank column
-    """
-    luna = db.LunaDB()
+# def update_5_24_21():
+#     """
+#     # 1 Add tickers SPY, GME, AMC, and QQQ to tables
+#     # 2 Add IVRank column
+#     """
+#     luna = db.LunaDB()
+#
+#     print("Server Update Started")
+#     # 1
+#     luna.update_tables()
+#
+#     # 2
+#     for ticker in snp.ticker_list:
+#         if '.' in ticker:
+#             ticker = ticker.replace('.', '')
+#         ticker = ticker.lower()
+#         try:
+#             luna.add_column(ticker, '', 'iv_rank', 'decimal(6,2)')
+#         except:
+#             pass
+#
+#     print("Update Complete!")
 
-    print("Server Update Started")
-    # 1
-    luna.update_tables()
-
-    # 2
-    for ticker in snp.ticker_list:
-        if '.' in ticker:
-            ticker = ticker.replace('.', '')
-        ticker = ticker.lower()
-        try:
-            luna.add_column(ticker, '', 'iv_rank', 'decimal(6,2)')
-        except:
-            pass
-
-    print("Update Complete!")
-
-update_5_24_21()

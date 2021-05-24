@@ -111,5 +111,5 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
         pass
 
 
-# with HTTPServer(('', 42069), LunaOptionsHTTPServer) as server:
-#     server.serve_forever()
+with HTTPServer(('', 42069), LunaOptionsHTTPServer) as server:
+    server.serve_forever()
