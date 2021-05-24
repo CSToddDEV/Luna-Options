@@ -150,3 +150,5 @@ def update_5_24_21():
             pass
 
     print("Update Complete!")
+
+update_5_24_21()
