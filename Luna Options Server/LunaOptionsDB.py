@@ -3,7 +3,7 @@ from SandP500List import ticker_list as snp
 from APIKey import db_password as pw
 from datetime import datetime
 import ImpliedVolatility as iv
-from LunaOptionsHTTPSocket import get_IV_rank as http_get
+# from LunaOptionsHTTPSocket import get_IV_rank as http_get
 
 
 class LunaDB:
