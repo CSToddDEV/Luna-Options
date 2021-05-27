@@ -647,6 +647,16 @@ class LunaDB:
         return_data = []
         data = self.get_table(table, '')
         for point in data:
+            return_data.append((str(point[1]), str(point[2])))
+        return return_data
+
+    def get_top_50_sentiment(self, table):
+        """
+        Returns the top 50 current security IV
+        """
+        return_data = []
+        data = self.get_table(table, '')
+        for point in data:
             return_data.append((str(point[1]), str(point[2]), str(point[3])))
         return return_data
 

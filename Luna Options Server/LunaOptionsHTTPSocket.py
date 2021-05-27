@@ -115,7 +115,7 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
 
             if 'sentiment' in values and str(query['sentiment']).lower() == 'true':
                 major_sentiments = {}
-                major_sentiments['top_50'] = self.db.get_top_50('market_sentiment')
+                major_sentiments['top_50'] = self.db.get_top_50_sentiment('market_sentiment')
 
                 response.update(major_sentiments)
 
