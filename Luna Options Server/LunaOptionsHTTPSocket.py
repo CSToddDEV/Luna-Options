@@ -123,13 +123,6 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
 
             return response_json
 
-def get_IV_rank(ticker):
-    """
-    Placeholder for get IVRank function
-    """
-    # Will Implement Function when team mates service is available
-    pass
-
 
 with HTTPServer(('', 42069), LunaOptionsHTTPServer) as server:
     server.serve_forever()

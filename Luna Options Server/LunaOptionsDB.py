@@ -2,6 +2,7 @@ import mysql.connector
 from SandP500List import ticker_list as snp
 from APIKey import db_password as pw
 import ImpliedVolatility as iv
+import APICallScript as api
 
 
 class LunaDB:
@@ -14,6 +15,7 @@ class LunaDB:
         self.db_user = db_user
         self.password = password
         self.database = database
+        self.api = api.APICalls()
 
     def db_connect(self):
         """
@@ -664,8 +666,14 @@ class LunaDB:
         """
         Updates the IV Rank column for a given ticker.
         """
-        # Will update when team mate finishes services
-        # IV_rank = http_get(ticker)
-        # self.update_column_conditional(ticker, '', 'iv_rank', IV_rank, 'id', '1')
+        table = self.get_column_data(ticker, '_historicalIV', 'historicalIVs')
+        current = float(table[-1][0])
 
-        pass
+        table = self.get_table(ticker, '')
+        high = float(table[0][4])
+        low = float(table[0][5])
+
+        IV_rank = self.api.iv_rank_call(ticker, current, low, high)
+
+        self.update_column_conditional(ticker, '', 'iv_rank', IV_rank, 'id', '1')
+
