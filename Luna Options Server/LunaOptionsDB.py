@@ -610,7 +610,7 @@ class LunaDB:
                 break
             print('ticker, sentiment', str(sentiment[i][2]) + ", " + str(sentiment[i][0]) + str(sentiment[i][1]))
             self.update_column('market_sentiment', '', 'ticker, sentiment, direction',
-                               "'" + str(sentiment[i][2]) + "'" + ", " + str(sentiment[i][0]) + ", " + str(sentiment[i][1]))
+                               "'" + str(sentiment[i][2]) + "'" + ", " + str(sentiment[i][0]) + ", '" + str(sentiment[i][1]) + "'")
             counter += 1
 
     def quick_sort(self, array, low, high):
