@@ -65,6 +65,33 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
 
             return return_dict
 
+    def tick_response(self, response, query):
+        """
+        Updates HTTP_Response with ticker data, returns response object
+        """
+        response.update(self.ticker_template.copy())
+        ticker = query['tick']
+        ticker = ticker.lower()
+        response['ticker'] = ticker
+
+        data = self.db.get_ticker_info(ticker)
+        response.update(data)
+
+        return response
+
+    def options_response(self, response, query):
+        """
+        Updates response object with options data, returns response object
+        """
+        options = {}
+        ticker = query['tick']
+        ticker = ticker.lower()
+        options['contracts'] = self.db.get_options_contracts(ticker)
+
+        response.update(options)
+
+        return response
+
     def HTTP_response(self, query):
         """
         Takes a dictionary object, calls for the data and returns a JSON object for the
@@ -72,25 +99,13 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
         """
         if query:
             values = query.keys()
-
             response = {}
 
             if 'tick' in values:
-                response.update(self.ticker_template.copy())
-                ticker = query['tick']
-                ticker = ticker.lower()
-                response['ticker'] = ticker
-
-                data = self.db.get_ticker_info(ticker)
-                response.update(data)
+                response = self.tick_response(response, query)
 
             if 'options' in values and str(query['options']).lower() == 'true':
-                options = {}
-                ticker = query['tick']
-                ticker = ticker.lower()
-                options['contracts'] = self.db.get_options_contracts(ticker)
-
-                response.update(options)
+                response = self.options_response(response, query)
 
             if 'top_iv' in values and str(query['top_iv']).lower() == 'true':
                 top_ivs = {}
@@ -98,7 +113,6 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
 
                 response.update(top_ivs)
 
-            print(response)
             response_json = json.dumps(response, separators=(',', ':'))
 
             return response_json

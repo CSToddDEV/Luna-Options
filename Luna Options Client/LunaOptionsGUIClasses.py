@@ -2,14 +2,15 @@ from tkinter import *
 from tkinter import font
 from PIL import ImageTk, Image
 import requests
-import os, sys
-import time
+import os
+import sys
 
 
 class LunaPage:
     """
     The base class for the Luna Options GUI
     """
+
     def __init__(self, root, bg_color):
         self.server = 'http://161.35.186.108:42069'
         self.root = root
@@ -42,7 +43,8 @@ class LunaPage:
         self.bg_frame = bg_frame
 
         # Create and Set Title
-        Label(bg_frame, text='Luna Options', font=self.title_font, bg=self.bg_color).place(relx=0.5, rely=0.1, anchor='center')
+        Label(bg_frame, text='Luna Options', font=self.title_font, bg=self.bg_color).place(relx=0.5, rely=0.1,
+                                                                                           anchor='center')
 
         # Create and Set Luna Symbol
         luna_raw = Image.open(self.resource_path("luna-transparent.png"))
@@ -86,8 +88,8 @@ class LunaPage:
 
         # Quit Button
         quit_button = Label(menu_window, bg=self.menu_color, text="Quit", font=self.menu_font, width=10, height=5,
-                     borderwidth=5,
-                     relief='solid', cursor='hand2')
+                            borderwidth=5,
+                            relief='solid', cursor='hand2')
         quit_button.place(relx=0.0, rely=0.75, anchor='nw')
         quit_button.bind("<Button>", self.quit_window_link)
 
@@ -189,6 +191,7 @@ class HomePage(LunaPage):
     """
     The Home Page Class for Luna Options
     """
+
     def __init__(self, root, bg_color):
         super().__init__(root, bg_color)
 
@@ -201,7 +204,7 @@ class HomePage(LunaPage):
         self.CreateToolTip(security_button, "If you want to search a specific security")
 
         trend_button = Button(self.bg_frame, width=20, height=1, text='Trends & Reports', bg='grey',
-                                 font=self.text_font, command=self.trend_window_link)
+                              font=self.text_font, command=self.trend_window_link)
         trend_button.place(relx=0.5, rely=0.55, anchor="center")
         self.CreateToolTip(trend_button, "If you would like to view reports and trends")
 
@@ -210,6 +213,7 @@ class QuitPage(LunaPage):
     """
     The Quit Page Class for Luna Options
     """
+
     def __init__(self, root, bg_color):
         super().__init__(root, bg_color)
 
@@ -223,6 +227,7 @@ class SecuritySearch(LunaPage):
     """
     The Security Search Page Class for Luna Options
     """
+
     def __init__(self, root, bg_color):
         super().__init__(root, bg_color)
         self.suc_rate = 70
@@ -230,7 +235,7 @@ class SecuritySearch(LunaPage):
 
         search_box = Entry(self.bg_frame, width=15, font=self.text_font)
         search_box.place(relx=0.5, rely=0.4, anchor="ne")
-        self. search_box = search_box
+        self.search_box = search_box
 
         search_button = Button(self.bg_frame, text='Search Ticker', bg='grey', command=self.search_security,
                                font=self.button_font, height=1)
@@ -278,7 +283,7 @@ class SecuritySearch(LunaPage):
         sentiment_label = Label(security_frame, text=sentiment, bg=self.bg_color, font=self.text_font)
         sentiment_label.place(relx=0.5, rely=0.25, anchor="center")
 
-        divider = Canvas(security_frame, height=450, bg=self.bg_color, highlightthickness=0,)
+        divider = Canvas(security_frame, height=450, bg=self.bg_color, highlightthickness=0, )
         divider.place(relx=0.49, rely=1.0, anchor="sw")
         divider.create_line(0, 0, 0, 450, width=10)
 
@@ -458,6 +463,7 @@ class TrendPage(LunaPage):
     """
     The Home Page Class for Luna Options
     """
+
     def __init__(self, root, bg_color):
         super().__init__(root, bg_color)
 
@@ -466,12 +472,12 @@ class TrendPage(LunaPage):
         trend.place(relx=0.5, rely=0.35, anchor='center')
 
         highiv_button = Button(self.bg_frame, width=23, height=1, text='Highest IV Securities', bg='grey',
-                                 font=self.text_font, command=self.highest_iv_report)
+                               font=self.text_font, command=self.highest_iv_report)
         highiv_button.place(relx=0.5, rely=0.45, anchor="center")
         self.CreateToolTip(highiv_button, "Generate a report of the highest IV securities")
 
         highvol_button = Button(self.bg_frame, width=23, height=1, text='Highest Vol Securities', bg='grey',
-                                 font=self.text_font, command=self.highest_vol_report)
+                                font=self.text_font, command=self.highest_vol_report)
         highvol_button.place(relx=0.5, rely=0.53, anchor="center")
         self.CreateToolTip(highvol_button, "Generate a report of the highest volume securities")
 
@@ -481,7 +487,7 @@ class TrendPage(LunaPage):
         self.CreateToolTip(winners_button, "Generate a report of the highest trending securities for the day")
 
         losers_button = Button(self.bg_frame, width=23, height=1, text='Daily Losers', bg='grey',
-                                font=self.text_font, command=self.daily_losers_report)
+                               font=self.text_font, command=self.daily_losers_report)
         losers_button.place(relx=0.5, rely=0.69, anchor="center")
         self.CreateToolTip(losers_button, "Generate a report of the highest negative trending securities for the day")
 
@@ -531,8 +537,9 @@ class TrendPage(LunaPage):
         i = 1
         for row in range(10):
             for column in range(5):
-                info = str(i) + '. ' + data[dict_call][i-1][0] + " " + data[dict_call][i-1][1] + symbol
-                Label(report_data, text=info, bg=self.bg_color, fg=color, font=self.report_font).grid(row=row, column=column, padx=10, pady=12)
+                info = str(i) + '. ' + data[dict_call][i - 1][0] + " " + data[dict_call][i - 1][1] + symbol
+                Label(report_data, text=info, bg=self.bg_color, fg=color,
+                      font=self.report_font).grid(row=row, column=column, padx=10, pady=12)
                 i += 1
 
         self.report = report_window
@@ -579,7 +586,7 @@ class ToolTip(object):
             return
         x, y, cx, cy = self.widget.bbox("insert")
         x = x + self.widget.winfo_rootx() + 107
-        y = y + cy + self.widget.winfo_rooty() +47
+        y = y + cy + self.widget.winfo_rooty() + 47
         self.tipwindow = tw = Toplevel(self.widget)
         tw.wm_overrideredirect(1)
         tw.wm_geometry("+%d+%d" % (x, y))

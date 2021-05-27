@@ -34,7 +34,6 @@ class DBUpdate:
         time = None
         for ticker in self.snp.ticker_list:
             ticker = ticker.lower()
-            print(ticker)
             quote = self.api.security_quote_call(ticker)
 
             if quote:
@@ -249,4 +248,3 @@ class DBUpdate:
 if __name__ == "__main__":
     test = DBUpdate()
     test.updater()
-

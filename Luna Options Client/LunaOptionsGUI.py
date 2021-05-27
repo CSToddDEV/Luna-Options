@@ -1,7 +1,6 @@
 from tkinter import *
 import LunaOptionsGUIClasses as gui
 
-# Create Tkinter Object
 root = Tk()
 
 # Set window size and make it non-resizeable
@@ -27,5 +26,4 @@ luna_pages.append(homepage)
 for page in luna_pages:
     page.homepage, page.quit_page, page.security_search, page.trend_window = homepage, quit_page, search_security, trend
 
-# Run object on loop
 root.mainloop()
