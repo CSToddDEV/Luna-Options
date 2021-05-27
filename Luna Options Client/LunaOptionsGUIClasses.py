@@ -476,19 +476,24 @@ class TrendPage(LunaPage):
         highiv_button.place(relx=0.5, rely=0.45, anchor="center")
         self.CreateToolTip(highiv_button, "Generate a report of the highest IV securities")
 
+        sentiment_button = Button(self.bg_frame, width=23, height=1, text='Major Market Sentiments', bg='grey',
+                               font=self.text_font, command=self.sentiment_report)
+        sentiment_button.place(relx=0.5, rely=0.53, anchor="center")
+        self.CreateToolTip(sentiment_button, "Generate a report of the Major Market Sentiment")
+
         highvol_button = Button(self.bg_frame, width=23, height=1, text='Highest Vol Securities', bg='grey',
                                 font=self.text_font, command=self.highest_vol_report)
-        highvol_button.place(relx=0.5, rely=0.53, anchor="center")
+        highvol_button.place(relx=0.5, rely=0.61, anchor="center")
         self.CreateToolTip(highvol_button, "Generate a report of the highest volume securities")
 
         winners_button = Button(self.bg_frame, width=23, height=1, text='Daily Winners', bg='grey',
                                 font=self.text_font, command=self.daily_winners_report)
-        winners_button.place(relx=0.5, rely=0.61, anchor="center")
+        winners_button.place(relx=0.5, rely=0.69, anchor="center")
         self.CreateToolTip(winners_button, "Generate a report of the highest trending securities for the day")
 
         losers_button = Button(self.bg_frame, width=23, height=1, text='Daily Losers', bg='grey',
                                font=self.text_font, command=self.daily_losers_report)
-        losers_button.place(relx=0.5, rely=0.69, anchor="center")
+        losers_button.place(relx=0.5, rely=0.77, anchor="center")
         self.CreateToolTip(losers_button, "Generate a report of the highest negative trending securities for the day")
 
     # Report Logic
@@ -503,6 +508,16 @@ class TrendPage(LunaPage):
             dict_call = 'top_50'
             params = {
                 'top_iv': True
+            }
+            json = requests.get(self.server, params)
+            data = json.json()
+        elif type == "sentiment":
+            symbol = "%"
+            color = "black"
+            title = "Major Market Sentiments"
+            dict_call = 'top_50'
+            params = {
+                'sentiment': True
             }
             json = requests.get(self.server, params)
             data = json.json()
@@ -567,6 +582,12 @@ class TrendPage(LunaPage):
         Function for the daily losers report
         """
         self.create_report("lose")
+
+    def sentiment_report(self):
+        """
+        Function for the Major Market Sentiment report
+        """
+        self.create_report("sentiment")
 
 
 class ToolTip(object):

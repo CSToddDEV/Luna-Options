@@ -66,6 +66,9 @@ class LunaDB:
         sql = "CREATE TABLE IF NOT EXISTS top_iv_table(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, ticker varchar(" \
               "255), currentIV decimal(6, 2)) "
         tables.execute(sql)
+        sql = "CREATE TABLE IF NOT EXISTS market_sentiment(id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, ticker varchar(" \
+              "255), sentiment decimal(6, 2), direction varchar(255)) "
+        tables.execute(sql)
 
         if tickers:
             for ticker in snp:
@@ -552,21 +555,17 @@ class LunaDB:
         Updates the high iv table in lunaoptionsDB
         """
         ivs = []
-        bullish = []
-        bearish = []
+
         self.truncate_table('top_iv_table', '')
         for ticker in snp:
             if '.' in ticker:
                 ticker = ticker.replace('.', '')
             table = self.get_column_data(ticker, '_historicalIV', 'historicalIVs')
-            # sentiment = self.get_column_data(ticker, '', 'marketSentiment')
+
             if table:
                 cur_iv = (table[-1][0], ticker)
                 ivs.append(cur_iv)
-            # if sentiment:
-            #     if bullish in sentiment[-1][0]:
-            #         sent = (sentiment[-1][0], ticker)
-            #         bullish.append(sent)
+
         # Sort IVS
         self.quick_sort(ivs, 0, len(ivs) - 1)
 
@@ -578,6 +577,38 @@ class LunaDB:
             print('ticker, currentIV', str(ivs[i][1]) + ", " + str(ivs[i][0]))
             self.update_column('top_iv_table', '', 'ticker, currentIV',
                                "'" + str(ivs[i][1]) + "'" + ", " + str(ivs[i][0]))
+            counter += 1
+
+    def update_market_sentiment_table(self):
+        """
+        Updates the market sentiment table in lunaoptionsDB
+        """
+        sentiment = []
+
+        self.truncate_table('market_sentiment', '')
+        for ticker in snp:
+            if '.' in ticker:
+                ticker = ticker.replace('.', '')
+            table = self.get_column_data(ticker, '', 'marketSentiment')
+
+            if table:
+                ticker_sentiment_split = table[-1][0].split('%')
+                ticker_sentiment_split[0] = ticker_sentiment_split[0].strip()
+                ticker_sentiment_split[1] = ticker_sentiment_split[1].strip()
+                ticker_sentiment = (float(ticker_sentiment_split[0]), ticker_sentiment_split[1], ticker)
+                sentiment.append(ticker_sentiment)
+
+        # Sort IVS
+        self.quick_sort(sentiment, 0, len(sentiment) - 1)
+
+        # Append top 50 IV securities
+        counter = 0
+        for i in reversed(range(len(sentiment))):
+            if counter > 50:
+                break
+            print('ticker, sentiment', str(sentiment[i][2]) + ", " + str(sentiment[i][0]) + str(sentiment[i][1]))
+            self.update_column('market_sentiment', '', 'ticker, sentiment, direction',
+                               "'" + str(sentiment[i][2]) + "'" + ", " + str(sentiment[i][0]) + ", " + str(sentiment[i][1]))
             counter += 1
 
     def quick_sort(self, array, low, high):
@@ -609,12 +640,12 @@ class LunaDB:
 
         return i + 1
 
-    def get_top_50(self):
+    def get_top_50(self, table):
         """
         Returns the top 50 current security IV
         """
         return_data = []
-        data = self.get_table('top_iv_table', '')
+        data = self.get_table(table, '')
         for point in data:
             return_data.append((str(point[1]), str(point[2])))
         return return_data

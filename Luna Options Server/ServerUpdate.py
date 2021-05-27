@@ -151,3 +151,21 @@ from LunaOptionsDBUpdate import DBUpdate as update
 #
 #     print("Update Complete!")
 
+def update_5_27_21():
+    """
+    # 1 Add sentiment table
+    # 2 Update sentiment table
+    """
+    luna = db.LunaDB()
+
+    print("Server Update Started")
+    # 1
+    luna.update_tables()
+
+    # 2
+    luna.update_market_sentiment_table()
+
+    print("Update Complete!")
+
+update_5_27_21()
+

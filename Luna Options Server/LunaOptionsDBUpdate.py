@@ -106,6 +106,7 @@ class DBUpdate:
                 self.db.update_high_and_low(ticker)
                 self.db.curate_daily_high_and_low(ticker)
                 self.db.update_and_curate_volume(ticker, str(volume))
+                self.db.update_market_sentiment_table()
                 # Update IV Rank when team mate finishes service
                 # self.db.update_IV_rank(ticker)
 
