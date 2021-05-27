@@ -344,7 +344,7 @@ class SecuritySearch(LunaPage):
 
         iv_field_label = Label(security_frame, text="IV Rank:", bg=self.bg_color, font=self.category_font)
         iv_field_label.place(relx=0.25, rely=0.59, anchor="nw")
-        iv_value = "120%"
+        iv_value = f"{security_information['IVRank']:,d}" + '%'
         iv_value_label = Label(security_frame, text=iv_value, bg=self.bg_color, font=self.data_font)
         iv_value_label.place(relx=0.335, rely=0.63, anchor="nw")
 
