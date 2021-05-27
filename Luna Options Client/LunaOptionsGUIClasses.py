@@ -521,6 +521,7 @@ class TrendPage(LunaPage):
             }
             json = requests.get(self.server, params)
             data = json.json()
+            print(data)
         elif type == "vol":
             symbol = "M"
             color = "black"
@@ -553,8 +554,16 @@ class TrendPage(LunaPage):
         for row in range(10):
             for column in range(5):
                 info = str(i) + '. ' + data[dict_call][i - 1][0] + " " + data[dict_call][i - 1][1] + symbol
-                Label(report_data, text=info, bg=self.bg_color, fg=color,
-                      font=self.report_font).grid(row=row, column=column, padx=10, pady=12)
+                if type == 'sentiment':
+                    if data[dict_call][i-1][2].lower() == 'bullish':
+                        Label(report_data, text=info, bg=self.bg_color, fg='green',
+                              font=self.report_font).grid(row=row, column=column, padx=10, pady=12)
+                    else:
+                        Label(report_data, text=info, bg=self.bg_color, fg='red',
+                              font=self.report_font).grid(row=row, column=column, padx=10, pady=12)
+                else:
+                    Label(report_data, text=info, bg=self.bg_color, fg=color,
+                          font=self.report_font).grid(row=row, column=column, padx=10, pady=12)
                 i += 1
 
         self.report = report_window

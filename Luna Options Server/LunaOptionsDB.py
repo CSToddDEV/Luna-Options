@@ -647,7 +647,7 @@ class LunaDB:
         return_data = []
         data = self.get_table(table, '')
         for point in data:
-            return_data.append((str(point[1]), str(point[2])))
+            return_data.append((str(point[1]), str(point[2]), str(point[3])))
         return return_data
 
     def update_IV_rank(self, ticker):
