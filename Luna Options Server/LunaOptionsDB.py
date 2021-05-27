@@ -593,10 +593,12 @@ class LunaDB:
 
             if table:
                 ticker_sentiment_split = table[-1][0].split('%')
-                ticker_sentiment_split[0] = ticker_sentiment_split[0].strip()
-                ticker_sentiment_split[1] = ticker_sentiment_split[1].strip()
-                ticker_sentiment = (float(ticker_sentiment_split[0]), ticker_sentiment_split[1], ticker)
-                sentiment.append(ticker_sentiment)
+                if len(ticker_sentiment_split) > 1:
+                    print(ticker_sentiment_split)
+                    ticker_sentiment_split[0] = ticker_sentiment_split[0].strip()
+                    ticker_sentiment_split[1] = ticker_sentiment_split[1].strip()
+                    ticker_sentiment = (float(ticker_sentiment_split[0]), ticker_sentiment_split[1], ticker)
+                    sentiment.append(ticker_sentiment)
 
         # Sort IVS
         self.quick_sort(sentiment, 0, len(sentiment) - 1)

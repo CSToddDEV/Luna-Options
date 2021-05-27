@@ -159,8 +159,8 @@ def update_5_27_21():
     luna = db.LunaDB()
 
     print("Server Update Started")
-    # 1
-    luna.update_tables()
+    # # 1
+    # luna.update_tables()
 
     # 2
     luna.update_market_sentiment_table()
