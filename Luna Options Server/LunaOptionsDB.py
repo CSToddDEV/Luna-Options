@@ -594,7 +594,6 @@ class LunaDB:
             if table:
                 ticker_sentiment_split = table[-1][0].split('%')
                 if len(ticker_sentiment_split) > 1:
-                    print(ticker_sentiment_split)
                     ticker_sentiment_split[0] = ticker_sentiment_split[0].strip()
                     ticker_sentiment_split[1] = ticker_sentiment_split[1].strip()
                     ticker_sentiment = (float(ticker_sentiment_split[0]), ticker_sentiment_split[1], ticker)
@@ -608,7 +607,6 @@ class LunaDB:
         for i in reversed(range(len(sentiment))):
             if counter > 50:
                 break
-            print('ticker, sentiment', str(sentiment[i][2]) + ", " + str(sentiment[i][0]) + str(sentiment[i][1]))
             self.update_column('market_sentiment', '', 'ticker, sentiment, direction',
                                "'" + str(sentiment[i][2]) + "'" + ", " + str(sentiment[i][0]) + ", '" + str(sentiment[i][1]) + "'")
             counter += 1
