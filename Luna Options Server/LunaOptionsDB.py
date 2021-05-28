@@ -677,6 +677,7 @@ class LunaDB:
             low = float(table[0][5])
 
             IV_rank = self.api.iv_rank_call(ticker, current, low, high)
+            print(IV_rank)
 
         if IV_rank:
             self.update_column_conditional(ticker, '', 'iv_rank', str(IV_rank), 'id', '1')
