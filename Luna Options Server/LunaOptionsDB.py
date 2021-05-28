@@ -667,14 +667,16 @@ class LunaDB:
         """
         Updates the IV Rank column for a given ticker.
         """
+        IV_rank = None
         table = self.get_column_data(ticker, '_historicalIV', 'historicalIVs')
-        current = float(table[-1][0])
+        if table:
+            current = float(table[-1][0])
 
-        table = self.get_table(ticker, '')
-        high = float(table[0][4])
-        low = float(table[0][5])
+            table = self.get_table(ticker, '')
+            high = float(table[0][4])
+            low = float(table[0][5])
 
-        IV_rank = self.api.iv_rank_call(ticker, current, low, high)
+            IV_rank = self.api.iv_rank_call(ticker, current, low, high)
 
         if IV_rank:
             self.update_column_conditional(ticker, '', 'iv_rank', str(IV_rank), 'id', '1')

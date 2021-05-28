@@ -90,7 +90,9 @@ class APICalls:
         """
         Communicates with Alraic's API to calculate IV Rank
         """
-        response = requests.get('https://alarichartsock.com/api/' + str(current) + '/' + str(low) + '/' + str(high) + '/')
+        request = 'https://alarichartsock.com/api/' + str(current) + '/' + str(low) + '/' + str(high) + '/'
+        print(request)
+        response = requests.get(request)
 
         if response.status_code == 200:
             return response.text
