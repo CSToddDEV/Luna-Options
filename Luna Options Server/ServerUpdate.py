@@ -151,22 +151,40 @@ from LunaOptionsDBUpdate import DBUpdate as update
 #
 #     print("Update Complete!")
 
-def update_5_27_21():
+# def update_5_27_21():
+#     """
+#     # 1 Add sentiment table
+#     # 2 Update sentiment table
+#     """
+#     luna = db.LunaDB()
+#
+#     print("Server Update Started")
+#     # # 1
+#     # luna.update_tables()
+#
+#     # 2
+#     for ticker in snp.ticker_list:
+#         luna.update_IV_rank(ticker)
+#
+#     print("Update Complete!")
+
+def update_6_02_21():
     """
-    # 1 Add sentiment table
-    # 2 Update sentiment table
+    # 1 Update Options
+    # 2 Update IV Rank
     """
     luna = db.LunaDB()
 
     print("Server Update Started")
-    # # 1
-    # luna.update_tables()
 
-    # 2
+    # 1
+    update.update_options()
+
     for ticker in snp.ticker_list:
+        # 2
         luna.update_IV_rank(ticker)
 
     print("Update Complete!")
 
-update_5_27_21()
+update_6_02_21()
 
