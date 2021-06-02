@@ -178,7 +178,8 @@ def update_6_02_21():
     print("Server Update Started")
 
     # 1
-    update.update_options()
+    option_update = update()
+    option_update.update_options()
 
     for ticker in snp.ticker_list:
         # 2
