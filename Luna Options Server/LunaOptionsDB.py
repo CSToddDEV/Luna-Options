@@ -293,7 +293,6 @@ class LunaDB:
         tables = lunaDB.cursor()
 
         sql = "UPDATE lunaoptionsdb." + ticker + table + " SET " + column + "=" + value + " WHERE " + cond_field + "=" + cond_value
-        print(sql)
         tables.execute(sql)
 
         lunaDB.commit()
