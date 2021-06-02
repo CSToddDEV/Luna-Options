@@ -306,6 +306,7 @@ class LunaDB:
         self.truncate_table(ticker, '')
         self.update_column(ticker, '', 'companyName, lastUpdated, marketSentiment, 52WeekHighIV, 52WeekLowIV',
                            company + ', ' + time + ', ' + sentiment + ', ' + high + ', ' + low)
+        self.update_IV_rank(ticker)
 
     def update_high_and_low(self, ticker):
         """
