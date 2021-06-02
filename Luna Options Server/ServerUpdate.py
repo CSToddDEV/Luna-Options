@@ -163,7 +163,8 @@ def update_5_27_21():
     # luna.update_tables()
 
     # 2
-    luna.update_market_sentiment_table()
+    for ticker in snp.ticker_list:
+        luna.update_IV_rank(ticker)
 
     print("Update Complete!")
 
