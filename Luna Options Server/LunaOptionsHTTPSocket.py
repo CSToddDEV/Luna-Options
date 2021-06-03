@@ -100,33 +100,23 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
         if query:
             values = query.keys()
             response = {}
-            print('hererererere')
 
             if 'tick' in values:
-                response = self.tick_response(response, query)
-                response = {}
-                print('hererererere1')
+                tick = self.tick_response(response, query)
+                response.update(tick)
 
             if 'options' in values and str(query['options']).lower() == 'true':
-                response = self.options_response(response, query)
-                response = {}
-                print('hererererere2')
+                option = self.options_response(response, query)
+                response.update(option)
 
             if 'top_iv' in values and str(query['top_iv']).lower() == 'true':
                 top_ivs = {}
                 top_ivs['top_50'] = self.db.get_top_50('top_iv_table')
-                response = {}
-                print('hererererere3')
-
                 response.update(top_ivs)
 
             if 'sentiment' in values and str(query['sentiment']).lower() == 'true':
-                print("HEREERERE4")
                 major_sentiments = {}
                 major_sentiments['top_50'] = self.db.get_top_50_sentiment('market_sentiment')
-                response = {}
-                print('hererererere')
-
                 response.update(major_sentiments)
 
             response_json = json.dumps(response, separators=(',', ':'))

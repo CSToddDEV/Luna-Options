@@ -521,8 +521,6 @@ class TrendPage(LunaPage):
             }
             json = requests.get(self.server, params)
             data = json.json()
-            print(data)
-            print("HERERE")
         elif type == "vol":
             symbol = "M"
             color = "black"
