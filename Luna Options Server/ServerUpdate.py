@@ -187,18 +187,18 @@ from LunaOptionsDBUpdate import DBUpdate as update
 #
 #     print("Update Complete!")
 
-def update_6_03_21():
-    """
-    # 1 Update sentiment table
-    """
-    luna = db.LunaDB()
-
-    print("Server Update Started")
-
-    # 1
-    luna.update_market_sentiment_table()
-
-    print("Update Complete!")
-
-update_6_03_21()
+# def update_6_03_21():
+#     """
+#     # 1 Update sentiment table
+#     """
+#     luna = db.LunaDB()
+#
+#     print("Server Update Started")
+#
+#     # 1
+#     luna.update_market_sentiment_table()
+#
+#     print("Update Complete!")
+#
+# update_6_03_21()
 
