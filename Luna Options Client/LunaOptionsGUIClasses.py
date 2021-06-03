@@ -552,7 +552,7 @@ class TrendPage(LunaPage):
         i = 1
         for row in range(10):
             for column in range(5):
-                print(data)
+                print(column)
                 info = str(i) + '. ' + data[dict_call][i - 1][0] + " " + data[dict_call][i - 1][1] + symbol
                 if type == 'sentiment':
                     if data[dict_call][i-1][2].lower() == 'bullish':
