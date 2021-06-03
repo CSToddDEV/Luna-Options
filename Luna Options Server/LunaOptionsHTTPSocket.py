@@ -100,6 +100,7 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
         if query:
             values = query.keys()
             response = {}
+            print(values)
 
             if 'tick' in values:
                 response = self.tick_response(response, query)
