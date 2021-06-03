@@ -114,6 +114,7 @@ class LunaOptionsHTTPServer(BaseHTTPRequestHandler):
                 response.update(top_ivs)
 
             if 'sentiment' in values and str(query['sentiment']).lower() == 'true':
+                print("HEREERERE")
                 major_sentiments = {}
                 major_sentiments['top_50'] = self.db.get_top_50_sentiment('market_sentiment')
 
