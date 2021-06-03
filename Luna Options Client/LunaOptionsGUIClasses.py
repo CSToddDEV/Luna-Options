@@ -520,8 +520,6 @@ class TrendPage(LunaPage):
                 'sentiment': True
             }
             json = requests.get(self.server, params)
-            print(json)
-
             data = json.json()
         elif type == "vol":
             symbol = "M"
