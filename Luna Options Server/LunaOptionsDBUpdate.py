@@ -106,8 +106,8 @@ class DBUpdate:
                 self.db.update_high_and_low(ticker)
                 self.db.curate_daily_high_and_low(ticker)
                 self.db.update_and_curate_volume(ticker, str(volume))
-                self.db.update_market_sentiment_table()
                 self.db.update_IV_rank(ticker)
+        self.db.update_market_sentiment_table()
 
         now = datetime.now()
         today = datetime.today()
@@ -187,7 +187,6 @@ class DBUpdate:
                 return str(percent) + '% Bearish'
             else:
                 return 'No Options'
-
 
     def updater(self):
         """

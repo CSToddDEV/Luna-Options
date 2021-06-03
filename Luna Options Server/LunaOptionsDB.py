@@ -603,6 +603,7 @@ class LunaDB:
                     ticker_sentiment = (float(ticker_sentiment_split[0]), ticker_sentiment_split[1], ticker)
                     sentiment.append(ticker_sentiment)
 
+        print(sentiment)
         # Sort IVS
         self.quick_sort(sentiment, 0, len(sentiment) - 1)
 
