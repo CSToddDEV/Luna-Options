@@ -86,19 +86,6 @@ class APICalls:
             print("The following ticker for historical volatility failed with the following error: ",
                   ticker, response.status_code)
 
-    def iv_rank_call(self, ticker, current, low, high):
-        """
-        Communicates with Alraic's API to calculate IV Rank
-        """
-        request = 'https://alarichartsock.com/api/ivr/' + str(round(current)) + '/' + str(round(low)) + '/' + str(round(high)) + '/'
-        response = requests.get(request)
-
-        if response.status_code == 200:
-            return response.text
-        else:
-            print("The following ticker for IV Rank Call failed with the following error: ",
-                  ticker, response.status_code)
-
 
 class APIError(Exception):
     """

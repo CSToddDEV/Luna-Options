@@ -305,7 +305,6 @@ class LunaDB:
         self.truncate_table(ticker, '')
         self.update_column(ticker, '', 'companyName, lastUpdated, marketSentiment, 52WeekHighIV, 52WeekLowIV',
                            company + ', ' + time + ', ' + sentiment + ', ' + high + ', ' + low)
-        self.update_IV_rank(ticker)
 
     def update_high_and_low(self, ticker):
         """
@@ -664,22 +663,3 @@ class LunaDB:
         for point in data:
             return_data.append((str(point[1]), str(point[2]), str(point[3])))
         return return_data
-
-    def update_IV_rank(self, ticker):
-        """
-        Updates the IV Rank column for a given ticker.
-        """
-        IV_rank = None
-        table = self.get_column_data(ticker, '_historicalIV', 'historicalIVs')
-        if table:
-            current = float(table[-1][0])
-
-            table = self.get_table(ticker, '')
-            high = float(table[0][4])
-            low = float(table[0][5])
-
-            IV_rank = self.api.iv_rank_call(ticker, current, low, high)
-
-        if IV_rank:
-            self.update_column_conditional(ticker, '', 'iv_rank', str(IV_rank), 'id', '1')
-
