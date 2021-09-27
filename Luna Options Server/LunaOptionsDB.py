@@ -463,7 +463,6 @@ class LunaDB:
         return_dict['sentiment'] = table[0][3]
         return_dict['52WeekHighIV'] = float(table[0][4])
         return_dict['52WeekLowIV'] = float(table[0][5])
-        return_dict['IVRank'] = float(table[0][6])
 
         table = self.get_column_data(ticker, '_historicalIV', 'historicalIVs')
         return_dict['current_IV'] = float(table[-1][0])
